@@ -65,15 +65,46 @@ Measurements, Admin API checks, and artifact creation never require MCP and must
 
 ## Artifact requirements
 
-- Use `samples/coffee` from the user's cloud for the preview asset. Use this original URL pattern: `https://res.cloudinary.com/<cloud>/image/upload/samples/coffee`.
-- Use this exact transformed URL chain between `/upload/` and `samples/coffee`: `b_gen_fill,c_pad,w_1000,h_1000,y_-100/l_text:Arial_72_bold:Adapt%20everywhere,co_white/e_shadow:50/fl_layer_apply,g_south_west,x_80,y_140/l_text:Arial_34:Dynamic%20media%20built%20in%20real%20time,co_rgb:f5f5f5/e_shadow:35/fl_layer_apply,g_south_west,x_84,y_90/f_auto,q_auto`.
+**REQUIRED FIRST STEP — always try `samples/coffee` before any other asset lookup:**
+
+Fetch `https://res.cloudinary.com/<cloud>/image/upload/samples/coffee` (replace `<cloud>` with the actual cloud name) and check the HTTP status code.
+
+- **200 response → use `samples/coffee` everywhere in Stage 5.** Do not search MCP or the Admin API for an alternative. Set `selection_source: "samples/coffee"` in `docs/cloudinary-environment.json`.
+- **Non-200 response → do NOT use `samples/coffee`.** Follow the fallback sequence below. Never use a URL that returned a non-200 response anywhere in Stage 5 artifacts.
+
+Do not skip the `samples/coffee` fetch and go straight to MCP search. This is a required step, not an optional one.
+
+**Fallback sequence (only when `samples/coffee` returns non-200):**
+
+  **MANDATORY: Do not proceed with a broken or placeholder image URL. You must find a real deliverable asset before continuing.**
+
+  1. Use the `mcp__cloudinary-asset-mgmt__list-images` or `mcp__cloudinary-asset-mgmt__search-assets` MCP tool to retrieve a real image asset from the user's cloud. Prefer assets from the `samples` folder. Pick the first result with resource_type `image` and access_mode `public`.
+  2. If MCP returns no results (empty cloud), tell the user their cloud has no uploaded images yet and ask them to upload at least one image before validation can complete. End with the blocking prompt footer. Wait for confirmation before continuing.
+  3. If MCP is unavailable, use the Admin API (`GET https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/resources/image?max_results=1`) with credentials loaded via shell-wrap. Parse the first result's `public_id`.
+  4. Use the selected public ID consistently for all preview URLs, validation artifacts, generated documentation, measurements, chat output, and preview HTML.
+  5. Never use a URL that returned a non-200 response anywhere in Stage 5 artifacts.
+
+  Record the selected `public_id`, original URL, transformed URL, selection source (`samples/coffee`, `mcp_list`, or `admin_api_list`), and reason in `docs/cloudinary-environment.json`.
+
+  Apply the required transformation chain to the selected preview asset.
+- Use this exact transformed URL chain between `/upload/` and and the selected public ID: `b_gen_fill,c_pad,w_1000,h_1000,y_-100/l_text:Arial_72_bold:Adapt%20everywhere,co_white/e_shadow:50/fl_layer_apply,g_south_west,x_80,y_140/l_text:Arial_34:Dynamic%20media%20built%20in%20real%20time,co_rgb:f5f5f5/e_shadow:35/fl_layer_apply,g_south_west,x_84,y_90/f_auto,q_auto`.
 - Keep the original URL, transformed URL, and transformation text identical in chat, `docs/cloudinary-environment.json`, and preview HTML.
 - Always create or update `docs/cloudinary-environment.json` when Stage 5 runs. Include `schema_version: 1`, non-secret `cloud_name`, upload preset details from MCP `get-upload-preset-details`, `preview` values, and real `measurements`. Never write secrets.
-- For back-end API-only and full-stack lanes, check Admin API config with `settings=true` using the detected project's Cloudinary SDK (not curl, not MCP). Load credentials from `.env` via the SDK's config method. The response shape is `{ "settings": { "folder_mode": "dynamic" | "fixed" }, ... }` — read `folder_mode` from `response.settings.folder_mode`, not the top-level response object. Persist `admin_api.reachable` and `admin_api.folder_mode` as `dynamic`, `fixed`, or `null` with a short error. Docs: https://cloudinary.com/documentation/admin_api#get_product_environment_config_details.
+- For back-end API-only and full-stack lanes, check Admin API config with `settings=true` using the detected project's Cloudinary SDK (not MCP). Load credentials from `.env` via the SDK's config method. The response shape is `{ "settings": { "folder_mode": "dynamic" | "fixed" }, ... }` — read `folder_mode` from `response.settings.folder_mode`, not the top-level response object. Persist `admin_api.reachable` and `admin_api.folder_mode` as `dynamic`, `fixed`, or `null` with a short error. Docs: https://cloudinary.com/documentation/admin_api#get_product_environment_config_details.
+
+  **Correct Admin API endpoint:** `GET https://api.cloudinary.com/v1_1/{cloud_name}/config?settings=true` authenticated with `-u API_KEY:API_SECRET`. Do NOT use `/admin/settings`, `/admin/account_info`, or any other path — those return 404. The correct path is `/v1_1/{cloud_name}/config`.
+
+  curl fallback (only when SDK is unavailable):
+  ```bash
+  curl -s "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/config?settings=true" \
+    -u "${CLOUDINARY_API_KEY}:${CLOUDINARY_API_SECRET}"
+  ```
+  Parse `response.settings.folder_mode` from the JSON result.
 - For front-end-only lanes, skip Admin API config. Omit `admin_api` or set `admin_api.skipped_reason: front_end_only_lane`, and mention the skip in validation.
 - Measure both preview URLs with a local script in a suitable project language. Use this Chrome-like `Accept` header: `image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8`. Record real bytes, content type, and dimensions when available. Never fabricate measurements.
 - For front-end-only and full-stack lanes, create or update `docs/cloudinary-getting-started-preview.html`. It must use the same two URL literals, fetch both URLs with the same `Accept` header, use `createImageBitmap` for browser stats when possible, show savings, and include a `#stage-5-integration-snippet` section. API-only lanes skip this file.
 - Never add the standalone preview to framework route code. It belongs only in `docs/`.
+- **Comments in generated files:** Every file created or significantly changed in Stage 5 must include short, useful inline comments explaining what each section does and why. Apply this to `docs/cloudinary-getting-started-preview.html` (explain each section: image display, measurement fetch, SDK snippet, stats), `docs/cloudinary-environment.json` (top-level comment block describing what the file contains and where to find docs), and any validation scripts. Focus on the non-obvious — why a particular URL pattern is used, what the Accept header achieves, what folder_mode means. Do not comment every line.
 - For server lanes, the chat snippet and `#stage-5-integration-snippet` must generate the delivery URL through the detected stack's Cloudinary SDK when available. Do not use a pasted static URL as the only server integration.
 - For front-end-only lanes, follow the framework-appropriate Cloudinary docs. A plain `<img src>` is acceptable when it matches the app. React-specific helpers are only for React-classified projects.
 - Optional validation scripts may wrap measurements and Admin checks. Name them according to the project ecosystem; do not assume npm unless the repo is npm-based.

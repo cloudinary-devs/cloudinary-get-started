@@ -1,18 +1,63 @@
-# After Done — What's next
+# What's next after setup
 
-After the user replies `Done`, provide up to four concrete next-step bullets. Each bullet that suggests a Cloudinary product capability must include at least one relevant official documentation link from this list. Do not give generic hardening/security lectures by default.
+After the user says `Done`, give them up to four specific next steps. Keep them short, practical, and use-case focused. Include copy/paste prompts where helpful.
 
-Recommended topics and links:
+Use the delivery lane tracked during setup to pick the right set. Replace `[framework]` in copy/paste prompts with the detected framework name, such as Flask, Django, Rails, or Next.js.
 
-- Client uploads for browser apps: Upload Widget https://cloudinary.com/documentation/upload_widget, programmatic uploads https://cloudinary.com/documentation/upload_images, React upload https://cloudinary.com/documentation/react_image_and_video_upload only for React-classified projects
-- AI background removal: https://cloudinary.com/documentation/background_removal
-- Video upload, transformation, and streaming: https://cloudinary.com/documentation/video_manipulation_and_delivery
-- Metadata and tagging: Structured metadata https://cloudinary.com/documentation/structured_metadata, Tags https://cloudinary.com/documentation/tags
-- Image galleries and multi-image layouts: Product Gallery https://cloudinary.com/documentation/product_gallery, Product Gallery reference https://cloudinary.com/documentation/product_gallery_reference
+## Next steps by delivery lane
 
-Client upload guidance:
+### Front-end only and full-stack lanes
 
-- React-classified: use the Stage 5 preset name, usually `getting_started`; set `VITE_CLOUDINARY_UPLOAD_PRESET` or lane equivalent; restart the dev server; set up the Upload Widget per official docs.
-- Non-React: point to the Upload Widget or programmatic upload docs for the detected framework. Do not default to React.
+**Let users add profile photos, listings, or gallery images**
+Allow users to upload media from your app and deliver it through Cloudinary.
 
-Do not ask users to confirm the preset stays unsigned on every turn. Do not suggest changing API key permissions/scopes unless the user reports a specific scope or usage failure.
+Copy/paste the prompt: `I want users to upload images in my [framework] app`
+
+**Make uploaded images load fast without manual resizing**
+Serve optimized images for different screens and devices without creating separate versions by hand.
+
+Copy/paste the prompt: `How do I automatically optimize user-uploaded images in my [framework] app?`
+
+**Create polished images for cards, previews, or social sharing**
+Generate cropped, padded, resized, or text-overlaid versions of images for your UI.
+
+Copy/paste the prompt: `How do I generate transformed image URLs for previews in my [framework] app?`
+
+**Build an admin workflow for finding and managing uploads**
+Use tags and metadata to make uploaded assets easier to find, filter, and manage.
+
+Copy/paste the prompt: `How do I tag and search uploaded assets in Cloudinary?`
+
+### Back-end API-only lanes
+
+**Accept image uploads from clients and store them in Cloudinary**
+Receive uploads through your API, send them to Cloudinary, and return delivery URLs to callers.
+
+Copy/paste the prompt: `How do I accept and store image uploads server-side in my [framework] API?`
+
+**Generate signed delivery URLs for protected assets**
+Create signed URLs on the server so protected assets can be delivered without exposing secrets or signing logic to the frontend.
+
+Copy/paste the prompt: `Add a server-side endpoint in my [framework] API that generates signed Cloudinary delivery URLs without exposing secrets to clients.`
+
+**Prepare transformed assets when files are uploaded**
+Use eager transformations or upload presets to create resized, optimized, or watermarked versions during upload.
+
+Copy/paste the prompt: `How do I apply transformations automatically when assets are uploaded in my [framework] API?`
+
+**Build an admin workflow for finding and managing uploads**
+Use tags and metadata to make uploaded assets easier to find, filter, and manage.
+
+Copy/paste the prompt: `How do I tag and search uploaded assets in Cloudinary?`
+
+## Rules
+
+* Use the detected delivery lane to choose the next steps.
+* Full-stack uses the front-end/full-stack set.
+* Back-end API-only uses the back-end API-only set.
+* Don't mix lane-specific suggestions.
+* Don't suggest responsive image delivery for an API-only app.
+* Don't ask repeatedly if the preset should stay unsigned.
+* Don't suggest API key changes unless the user reports a specific permission problem.
+* Keep the suggestions focused on user scenarios, not Cloudinary feature names.
+* For framework-specific details, let the user copy/paste the prompt and let the relevant skill answer.

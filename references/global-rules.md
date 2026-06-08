@@ -13,7 +13,7 @@ Cloudinary setup must follow the detected project stack:
 ## Non-negotiable global rules
 
 - Never ask for, print, echo, log, quote, or display secrets.
-- Never open, read, parse, grep, or quote `.env` contents. From Stage 4 onward, check only that the workspace-root `.env` file exists, then rely on user confirmation and successful MCP/API behavior.
+- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check only that the workspace-root `.env` file exists (using `ls` or equivalent), then rely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading or echoing their values.
 - Stage 3 may write placeholder `CLOUDINARY_*` values to `.env.example`. Client-side placeholders are allowed only when required by the detected framework, such as `VITE_*` for React/Vite.
 - Never place API secrets in source files, generated docs, MCP JSON, chat replies, scripts that echo output, logs, or validation artifacts.
 - If secrets are pasted into chat or committed, tell the user to rotate API credentials in the Cloudinary Console immediately without reproducing the secret values.
@@ -32,6 +32,16 @@ Cloudinary setup must follow the detected project stack:
 - Before each pause, briefly recap what was found or completed.
 - Do not continue past a failed command or missing setup unless the user confirms how to proceed.
 - Report only actual command/API results. Never invent expected output.
+
+## Response style
+
+Keep user-facing responses plain, calm, and practical.
+
+- Prefer simple setup language over technical shorthand.
+- Use required product or file names exactly, but avoid extra jargon around them.
+- Don’t explain implementation details unless they help the user take the next step.
+- Keep recaps short and focused on what was found, changed, or needed next.
+- Preserve all required gates, security rules, stage order, exact footers, and stage completion formats.
 
 ## Blocking prompt footer
 

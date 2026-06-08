@@ -41,9 +41,9 @@ Follow this hard order whenever work remains:
 
 1. Silent explore — then present the setup checklist
 2. Stage 1: AI tooling
-3. Stage 2: repo/framework check
+3. Stage 2: repo/framework check (ends with confirmation gate)
 4. Stage 3: detected-stack SDK + env file setup
-5. Stage 4: credentials + MCP activation
+5. Stage 4: credentials + MCP activation (starts with D1 account check)
 6. Stage 5: preset + validation artifacts + Done gate
 7. After the user replies `Done`: What's next
 
@@ -77,12 +77,17 @@ Reply to continue setup:
 Answer with: [adapted cues]
 ```
 
+**CRITICAL:** After the blocking prompt footer, you MUST STOP and wait for the user's response before proceeding to the next stage. Do not continue, do not start Stage X+1, do not run Stage X+1 setup code until the user answers.
+
 Rules:
 - Mark every completed stage with `[x]` in the checklist; leave upcoming stages as `[ ]`.
 - The "Stage X complete" bullets are concrete and specific — name actual files, packages, and actions, not categories.
 - The "Stage X+1" intro previews the next stage scope before the blocking prompt footer.
 - **Exception for the Stage 4 → Stage 5 transition:** replace the one or two sentence preview with the full validation plan as a bulleted list, drawn from the "What this stage does" section of `references/stage-5-validation.md`. This gives the user a clear picture of everything validation covers before they confirm.
 - The blocking prompt footer is always last (per `references/global-rules.md`).
+- **DO NOT execute the next stage until the user confirms.** Wait for their explicit answer to the gate question.
+
+**Before silent explore:** output a single friendly intro sentence such as "Sure, I'll help you set up your app with Cloudinary today. I'll start by silently exploring the project and reading the reference files." before doing any file inspection. Do not narrate the exploration itself.
 
 **Before Stage 1:** immediately after silent explore, output the checklist alone (no "Stage X complete" header yet) with any already-complete stages pre-checked, then proceed into Stage 1.
 
@@ -96,21 +101,56 @@ Update state only from actual repo checks, tool results, MCP behavior, or user c
 
 Use these gates as the single source of truth for stage progression.
 
-### Stage 4 gate — AI tooling ready
+### After Stage 1 — proceed to Stage 2
 
-Proceed to Stage 4 only when both are true:
+Both are true:
 
 - Required Cloudinary skills are installed in the current IDE or agent environment's canonical skills location.
 - Both Cloudinary MCP server configurations are present for `cloudinary-asset-mgmt` and `cloudinary-env-config`.
 
-If either item is missing, stop and complete Stage 1 before continuing.
+### After Stage 2 — proceed to Stage 3
 
-### Stage 5 gate — credentials and MCP ready
+Both are true:
 
-Proceed to Stage 5 only when all are true:
+- Stack and delivery lane are confirmed with the user.
+- User explicitly confirms readiness to proceed to Stage 3 (blocking prompt footer required at end of Stage 2).
 
-- The workspace-root `.env` file exists.
-- The user confirms real `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` values are saved there.
+### After Stage 3 — proceed to Stage 4
+
+Stage 3 complete:
+
+- SDK installed and configured.
+- `.env.example` created with placeholder credentials.
+- `.gitignore` updated to exclude `.env`.
+
+### Before Stage 4 — D1 account check is mandatory
+
+**CRITICAL:** Stage 4 MUST begin with D1 (Cloudinary account check) before requesting any credentials. Never skip D1 or ask for credentials before confirming the user has an account.
+
+**Stage 3 gate question:** The blocking prompt footer at the end of Stage 3 must ask only whether the user is ready to continue — NOT whether they have a Cloudinary account. The account check belongs to Stage 4 D1. Use this exact gate question and answer cues:
+
+```
+Reply to continue setup:
+
+Ready to move on to credentials and MCP activation?
+
+Answer with: Yes, let's continue · Not yet
+```
+
+### After Stage 4 D1+D2+D3 — proceed to Stage 5
+
+All are true:
+
+- D1 complete: user has confirmed they have a Cloudinary account.
+- D2 complete: user has retrieved cloud name, API key, and API secret from Cloudinary Console.
+- D3 complete: user has filled `.env` with real credentials and activated MCP servers.
+
+### Before Stage 5 — SDK and credentials fully ready
+
+All are true:
+
+- The workspace-root `.env` file exists with real credentials filled in.
+- The user confirms `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` are saved.
 - Any required client-side env placeholders are handled for the detected framework.
 - Either both Cloudinary MCP servers are reachable, or the D3 troubleshooting sequence in `references/stage-4-credentials.md` has been exhausted without success.
 

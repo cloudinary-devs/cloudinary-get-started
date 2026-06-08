@@ -33,3 +33,22 @@ Delivery lane rules:
 | `full-stack` | App has server + UI/templates | Yes | Yes |
 
 All lanes need cloud name, API key, and API secret in local `.env` for MCP. Front-end bundles may expose only cloud name and upload preset client-side.
+
+### Framework-specific classification guidance
+
+Server-rendered frameworks are not automatically back-end API-only.
+
+Classify Flask, Django, Rails, Laravel, Spring MVC, ASP.NET MVC, Phoenix, and similar frameworks as `full-stack` when the repository contains user-facing pages, templates, views, or server-rendered UI.
+
+Examples:
+- Flask + Jinja templates → `full-stack`
+- Django + templates → `full-stack`
+- Rails + views → `full-stack`
+- Laravel + Blade templates → `full-stack`
+
+Classify these frameworks as `back-end API-only` only when the application primarily exposes APIs and does not contain user-facing views, templates, or pages.
+
+Examples:
+- Flask REST API returning JSON only → `back-end API-only`
+- Django REST Framework API without templates → `back-end API-only`
+- Rails API mode → `back-end API-only`
