@@ -22,11 +22,11 @@ This prompt is especially useful when the user asks to:
 
 Run Cloudinary onboarding as a guarded, SDK-agnostic stage flow. Detect the project stack first, then use the official Cloudinary SDK, framework docs, or Cloudinary docs that match that stack.
 
-Keep user-facing replies short, practical, and action-oriented. Do not narrate investigation steps. Recap completed work before asking the next question.
+Keep user-facing replies short, practical, and action-oriented. Do not narrate investigation steps while exploring. After silent exploration, summarize what was discovered before asking to continue. At the end of each numbered stage, recap completed work before asking the next question.
 
 Follow this hard order whenever work remains:
 
-1. Silent explore — then present the setup checklist
+1. Silent explore — then present silent exploration feedback and the setup checklist
 2. Stage 1: AI tooling
 3. Stage 2: repo/framework check (ends with confirmation gate)
 4. Stage 3: detected-stack SDK + env file setup
@@ -34,15 +34,41 @@ Follow this hard order whenever work remains:
 6. Stage 5: preset + validation artifacts + Done gate
 7. After the user replies `Done`: What's next
 
-At the end of every stage, use the stage completion format defined below.
+Use the silent exploration feedback format after the initial silent exploration. Use the stage completion format at the end of every numbered stage.
 
 Skip redundant work when silent explore, files, MCP behavior, or the user proves a stage is already satisfied. Do not replay or pseudo-validate work that was never missing. Even when skipping, still end with the Done gate, and always provide What's next after `Done`.
 
 ---
 
-## Stage completion format
+Silent exploration feedback format
 
-Use this exact format at the end of every stage. No exceptions.
+Use this exact format after silent exploration, before starting Stage 1. No exceptions.
+
+**Silent exploration complete:**
+
+- [one bullet per concrete thing discovered: repo type, framework, package manager, existing Cloudinary usage, AI tooling status, relevant config files, etc.]
+
+**Here's the plan:**
+- [ ] Stage 1: AI tooling (MCP servers + skills)
+- [ ] Stage 2: Framework detection
+- [ ] Stage 3: SDK setup + environment file
+- [ ] Stage 4: Credentials + MCP activation
+- [ ] Stage 5: Validation
+
+**Stage 1 — AI tooling**
+[One or two sentences describing what will happen in Stage 1.]
+
+Reply to continue setup:
+
+[Concrete gate question]
+
+Answer with: [adapted cues]
+
+---
+
+## Stage and silent exploration completion format
+
+Use this exact format after silent exploration and at the end of every stage. No exceptions.
 
 ```
 **Stage X complete:**
