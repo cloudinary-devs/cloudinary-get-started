@@ -61,7 +61,7 @@ Copy/paste the prompt: `Show me how to generate optimized delivery URLs from ass
 **Transform and deliver video content**
 Generate optimized video URLs with format conversion, trimming, or overlays — the same transformation pipeline that works for images also works for video.
 
-Copy/paste the prompt: `Show me how to deliver and transform video assets in my [framework] app using Cloudinary`
+Copy/paste the prompt: `Show me how to deliver and transform video assets retrieved from my product environment in my [framework] app using Cloudinary`
 
 **Let users upload photos or files to your app**
 Add an upload flow to enable user-generated content, including profile photos, listings, attachments, and more.
