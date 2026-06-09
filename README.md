@@ -18,7 +18,7 @@ Inside a Claude Code session, type:
 
 ```
 Read and follow this Cloudinary setup prompt:
-https://raw.githubusercontent.com/cloudinary-devs/cloudinary-get-started/main/cloudinary-get-started-full-prompt.md
+https://cloudinary-devs/cloudinary-get-started/main/cloudinary-get-started-full-prompt.md
 ```
 
 OR
