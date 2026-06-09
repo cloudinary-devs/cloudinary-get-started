@@ -54,24 +54,16 @@ go run .
 If the detected framework is not listed above, determine and show the equivalent install-then-start sequence for that stack, but always include all prerequisite setup steps (venv, package manager install, etc.) before the server start command.
 
 **Optimize and deliver your product or marketing assets through Cloudinary**
-Generated transformed and optimized delivery URLs from assets in your product environment and display them in a gallery in your app.
 
-Copy/paste the prompt: `Show me how to generate optimized delivery URLs from assets in my Cloudinary product environment and display them in my [framework] app`
+Copy/paste the prompt: `Generate optimized delivery URLs from assets in my Cloudinary product environment and display them in my [framework] app`
 
 **Transform and deliver video content**
-Generate optimized video URLs with format conversion, trimming, or overlays — the same transformation pipeline that works for images also works for video.
 
-Copy/paste the prompt: `Show me how to deliver and transform video assets retrieved from my product environment in my [framework] app using Cloudinary`
+Copy/paste the prompt: `Transform, optimize, and deliver video assets retrieved from my product environment in my [framework] app using Cloudinary`
 
 **Let users upload photos or files to your app**
-Add an upload flow to enable user-generated content, including profile photos, listings, attachments, and more.
 
-Copy/paste the prompt: `I want users to upload images in my [framework] app`
-
-**Automate image variants and tagging at upload time**
-Use upload presets or eager transformations to automatically tag, resize, optimize, or watermark assets the moment they're uploaded.
-
-Copy/paste the prompt: `How do I apply transformations and tags automatically when assets are uploaded in my [framework] app?`
+Copy/paste the prompt: `Set up users to upload images in my [framework] app using the getting_started upload preset and the Cloudinary Upload widget`
 
 ### Back-end API-only lanes
 
@@ -80,25 +72,21 @@ Install dependencies and start the server so you can confirm it responds before 
 
 Use the exact same commands as shown in the front-end/full-stack lane above — output them word-for-word with no paraphrasing or alternatives.
 
-**Deliver your product or marketing assets through Cloudinary**
-Upload images to your product environment and use the SDK to generate delivery URLs in your API responses.
+**Generate transformed and optimized delivery URLs from your assets**
 
-Copy/paste the prompt: `Show me how to upload assets to my Cloudinary product environment and deliver them via my [framework] API`
+Copy/paste the prompt: `Generate transformed and optimized delivery URLs from my Cloudinary assets and return them in my [framework] API responses`
 
 **Generate signed delivery URLs for protected assets**
-Create signed URLs on the server so protected assets can be delivered without exposing secrets or signing logic to clients.
 
 Copy/paste the prompt: `Add a server-side endpoint in my [framework] API that generates signed Cloudinary delivery URLs without exposing secrets to clients`
 
-**Accept uploads from clients in your app**
-Add an upload endpoint that allows you to receive files from callers, such as images, documents, attachments, and more.
+**Upload files from your server to Cloudinary**
 
-Copy/paste the prompt: `How do I accept and store image uploads server-side in my [framework] API?`
+Copy/paste the prompt: `Upload files from my server to Cloudinary in my [framework] API`
 
 **Build an admin workflow for finding and managing assets**
-Use tags and metadata to make assets easier to find, filter, and manage at scale.
 
-Copy/paste the prompt: `How do I tag and search uploaded assets in Cloudinary?`
+Copy/paste the prompt: `Tag and search uploaded assets in Cloudinary using my [framework]`
 
 ## Rules
 
