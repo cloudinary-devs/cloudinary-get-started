@@ -14,21 +14,21 @@ A guided onboarding skill that helps developers integrate Cloudinary into a new 
 
 ## How to invoke it
 
-Inside a Claude Code session, type:
+### Option 1: Paste the full prompt
 
-```
-Read and follow this Cloudinary setup prompt: https://github.com/cloudinary-devs/cloudinary-get-started/blob/main/cloudinary-get-started-full-prompt.md
-```
+1. In your IDE, open or `cd` into the project where you want to configure Cloudinary.
 
-OR
+2. Copy the text from `cloudinary-get-started-full-prompt.md` and paste it into your LLM.
 
-Install the skill in your IDE and invoke:
+### Option 2: Use the skill
+
+Install the skill in your IDE, then invoke it with:
 
 ```
 /cloudinary-get-started
 ```
 
-or ask Claude to "get started with Cloudinary" in your project.
+You can also ask Claude to “get started with Cloudinary” in your project.
 
 ## Files in this directory
 
