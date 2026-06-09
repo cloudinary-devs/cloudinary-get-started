@@ -953,3 +953,4 @@ Copy/paste the prompt: `How do I tag and search uploaded assets in Cloudinary?`
 * For framework-specific details, let the user copy/paste the prompt and let the relevant skill answer.
 * When users ask follow-up questions about transformations, optimization, or delivery URLs, direct them to use the `/cloudinary-transformations` skill to build and debug URLs.
 * For questions about Cloudinary APIs, SDKs, webhooks, and implementation details not covered by specialized skills, direct them to use the `/cloudinary-docs` skill.
+* In code examples for rendering or delivering images in the app, always verify that the asset exists in the product environment before outputting the delivery URL. Don't hardcode or assume assets exist — guide users to check their Cloudinary product environment first.
