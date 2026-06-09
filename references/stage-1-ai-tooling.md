@@ -40,7 +40,7 @@ Credential handling:
 
 ## IDE config patterns
 
-**Claude Code** — write `mcpServers` to `.mcp.json` at the project root (not `.claude/settings.json`). Use shell-wrap to load `.env` at startup:
+**Claude Code** — write `mcpServers` to `.mcp.json` at the project root (not `.claude/settings.json`, not `.vscode/mcp.json`). This applies even when running inside the VS Code extension — Claude Code always uses `.mcp.json` at the project root, not the VS Code `servers` format. Use shell-wrap to load `.env` at startup:
 
 ```json
 {
