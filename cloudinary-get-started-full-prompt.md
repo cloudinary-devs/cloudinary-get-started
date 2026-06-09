@@ -1,10 +1,8 @@
-# Cloudinary Getting Started — Full Flattened Prompt
+# Cloudinary Getting Started — Full Prompt
 
-## When to use this skill
+Use this prompt when helping a user set up Cloudinary in a new or existing project, or when validating an existing Cloudinary integration.
 
-Use this skill when helping a user set up Cloudinary in a new or existing project, or when validating an existing Cloudinary integration.
-
-This skill is especially useful when the user asks to:
+This prompt is especially useful when the user asks to:
 
 - Get started with Cloudinary or CLD
 - Configure Cloudinary in a codebase
