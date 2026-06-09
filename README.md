@@ -17,8 +17,7 @@ A guided onboarding skill that helps developers integrate Cloudinary into a new 
 Inside a Claude Code session, type:
 
 ```
-Read and follow this Cloudinary setup prompt:
-https://raw.githubusercontent.com/cloudinary-devs/cloudinary-get-started/main/cloudinary-get-started-full-prompt.md
+Read and follow this Cloudinary setup prompt: https://github.com/cloudinary-devs/cloudinary-get-started/blob/main/cloudinary-get-started-full-prompt.md
 ```
 
 OR
