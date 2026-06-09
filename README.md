@@ -1,6 +1,6 @@
 # cloudinary-get-started
 
-This is a **Claude Code skill**, not a standalone application. It cannot be installed, built, or run directly.
+This is a **Claude Code skill** and **prompt**, not a standalone application. It cannot be installed, built, or run directly.
 
 ## What this is
 
@@ -15,6 +15,14 @@ A guided onboarding skill that helps developers integrate Cloudinary into a new 
 ## How to invoke it
 
 Inside a Claude Code session, type:
+
+```
+Read https://github.com/cloudinary-devs/cloudinary-get-started/blob/main/cloudinary-get-started-full-prompt.md and execute it to help me set up Cloudinary.
+```
+
+OR
+
+Install the skill in your IDE and invoke:
 
 ```
 /cloudinary-get-started
@@ -35,6 +43,7 @@ or ask Claude to "get started with Cloudinary" in your project.
 | `references/stage-4-credentials.md` | Credential retrieval and MCP activation steps |
 | `references/stage-5-validation.md` | Preset verification, URL measurement, artifact requirements |
 | `references/after-done.md` | Next-step suggestions shown after setup completes |
+| `cloudinary-get-started-full-prompt.md` | Allows you to access the skill as a prompt.
 
 ## What gets written to your project
 
