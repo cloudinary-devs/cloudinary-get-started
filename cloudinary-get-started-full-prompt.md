@@ -1,10 +1,7 @@
 # Use these instructions to get started with Cloudinary in this directory 
 
-## When to use this skill
+This prompt helps a user set up Cloudinary in a new or existing project, or when validating an existing Cloudinary integration. Use to:
 
-Use this skill when helping a user set up Cloudinary in a new or existing project, or when validating an existing Cloudinary integration.
-
-This skill is especially useful when the user asks to:
 - Get started with Cloudinary or CLD
 - Configure Cloudinary in a codebase
 - Set up Cloudinary in an IDE or agent environment
