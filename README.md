@@ -18,7 +18,7 @@ A guided onboarding skill that helps developers integrate Cloudinary into a new 
 
 1. In your IDE, open or `cd` into the project where you want to configure Cloudinary.
 
-2. Copy the text from `cloudinary-get-started-full-prompt.md` and paste it into your LLM.
+2. Copy the text from `cloudinary-get-started-full-prompt.md` and paste it into the terminal.
 
 ### Option 2: Use the skill
 
