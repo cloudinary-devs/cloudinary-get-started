@@ -39,13 +39,14 @@ Whenever a stage requires confirmation, stop immediately after BLOCKING_FOOTER a
 
 Whenever you must stop for an answer, finish with:
 
-```text
+---
 Reply to continue setup:
 
 <Concrete gate question>
 
 Answer with: <adapted cues>
-```
+
+---
 
 Use BLOCKING_FOOTER for Stage 1 approval, Stage 2 forks, Stage 4 prompts, MCP retry confirmations, Done, and any other wait state. Keep signup links, context, or short bullets above the footer. The footer must be final.
 
@@ -55,7 +56,6 @@ For Stage 1 approval, the concrete gate question must be the permission sentence
 
 Use this exact format at the end of every stage. No exceptions.
 
-```
 **Stage X complete:**
 
 - [one bullet per concrete thing done: files created, packages installed, config written, etc.]
@@ -70,12 +70,14 @@ Use this exact format at the end of every stage. No exceptions.
 **Stage X+1 — [stage name]**
 [One or two sentences describing what will happen in the next stage.]
 
+---
 Reply to continue setup:
 
 [Concrete gate question]
 
 Answer with: [adapted cues]
-```
+
+---
 
 Rules:
 - Mark every completed stage with `[x]` in the checklist; leave upcoming stages as `[ ]`.
@@ -122,13 +124,14 @@ Stage 3 complete:
 
 **Stage 3 gate question:** The BLOCKING_FOOTER at the end of Stage 3 must ask only whether the user is ready to continue — NOT whether they have a Cloudinary account. The account check belongs to Stage 4 D1. Use this exact gate question and answer cues:
 
-```
+---
 Reply to continue setup:
 
 Ready to move on to credentials and MCP activation?
 
 Answer with: Yes, let's continue · Not yet
-```
+
+---
 
 ### After Stage 4 D1+D2+D3 — proceed to Stage 5
 
@@ -259,8 +262,8 @@ https://cloudinary.com/documentation/cloudinary_llm_mcp#local_mcp_servers
 ### Cloudinary MCP server definitions
 
 Cloudinary onboarding requires these two stdio MCP servers:
-- `cloudinary-asset-mgmt` — package: `@cloudinary/asset-management`, command: `npx`, args: `-y --package @cloudinary/asset-management -- mcp start --transport stdio`
-- `cloudinary-env-config` — package: `@cloudinary/environment-config`, command: `npx`, args: `-y --package @cloudinary/environment-config -- mcp start --transport stdio`
+- `cloudinary-asset-mgmt` — package: `@cloudinary/asset-management`, command: `npx`, args: `-y --registry https://registry.npmjs.org --package @cloudinary/asset-management -- mcp start --transport stdio`
+- `cloudinary-env-config` — package: `@cloudinary/environment-config`, command: `npx`, args: `-y --registry https://registry.npmjs.org --package @cloudinary/environment-config -- mcp start --transport stdio`
 
 Configure those servers using the current IDE or agent environment's MCP format. Do not paste real secrets into MCP config. See Appendix A for IDE-specific config templates.
 
@@ -273,13 +276,14 @@ Credential handling:
 
 **Unknown IDE** — if the IDE is not recognized, ask one question before continuing:
 
-```text
+---
 Reply to continue setup:
 
 Which IDE or agent are you using?
 
 Answer with: <IDE name>
-```
+
+---
 
 Then apply the closest matching pattern from Appendix A. If truly unknown, provide the raw stdio server definitions and tell the user to add them in their IDE's MCP settings with `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` injected as environment variables.
 
@@ -291,9 +295,7 @@ Send only an optional one-line lead-in and the permission sentence below inside 
 
 Permission sentence, verbatim except for the placeholder:
 
-```text
-You're missing a few of our AI tools that make the coding assistant better at working with Cloudinary as you build. Can I add <missing MCP servers/skills> to make Cloudinary guidance and tasks smoother in this project?
-```
+> You're missing a few of our AI tools that make the coding assistant better at working with Cloudinary as you build. Can I add <missing MCP servers/skills> to make Cloudinary guidance and tasks smoother in this project?
 
 Placeholder rules:
 - Name the actual missing items, for example `Cloudinary MCP servers` or `cloudinary-docs and cloudinary-transformations via npx skills add`.
@@ -428,27 +430,21 @@ Do not summarize multiple substeps into a single response. Do not mention creden
 
 **The D1 prompt is itself a complete blocking prompt. Do NOT wrap it in an additional BLOCKING_FOOTER — that would duplicate the question.**
 
-```text
 Do you have a Cloudinary account?
 
-If not, sign up for free here:
-[Create a free Cloudinary account](https://cloudinary.com/users/register/free?utm_source=cursor&utm_medium=skill&utm_campaign=cloudinary-getting-started)
+If not, sign up for free here: [Create a free Cloudinary account](https://cloudinary.com/users/register/free?utm_source=cursor&utm_medium=skill&utm_campaign=cloudinary-getting-started)
 
 Answer with: Yes, I have an account · Yes, I just finished sign-up
-```
 
 Go to D2 only after the user confirms they have an account.
 
 ### D2 — API keys
 
-```text
-Grab your **cloud name**, **API key**, and **API secret** from the Cloudinary Console:
-[Cloudinary Console — API Keys](https://console.cloudinary.com/settings/api-keys)
+Grab your **cloud name**, **API key**, and **API secret** from the Cloudinary Console: [Cloudinary Console — API Keys](https://console.cloudinary.com/settings/api-keys)
 
 Reply when you have those values saved locally.
 
 Answer with: Got them · Ready
-```
 
 **IMPORTANT:** Use the exact link above — `https://console.cloudinary.com/settings/api-keys`. Do not tell the user to go to the "Dashboard tab" or any other location.
 
@@ -509,13 +505,14 @@ Show only the steps for the detected IDE, formatted as numbered imperatives:
 
 End D3 with BLOCKING_FOOTER:
 
-```text
+---
 Reply to continue setup:
 
 Are both cloudinary-asset-mgmt and cloudinary-env-config showing as Connected in /mcp?
 
 Answer with: yes · no · still connecting
-```
+
+---
 
 If the user reports MCP still does not connect, work through this troubleshooting sequence before stopping:
 - Confirm `.env` is at the project root (not `.env.local`, `.env.development`, or a parent directory)
@@ -800,11 +797,11 @@ Load only the template for the detected IDE.
   "mcpServers": {
     "cloudinary-asset-mgmt": {
       "command": "sh",
-      "args": ["-c", "set -a && . .env && set +a && npx -y --package @cloudinary/asset-management -- mcp start --transport stdio"]
+      "args": ["-c", "set -a && . .env && set +a && npx -y --registry https://registry.npmjs.org --package @cloudinary/asset-management -- mcp start --transport stdio"]
     },
     "cloudinary-env-config": {
       "command": "sh",
-      "args": ["-c", "set -a && . .env && set +a && npx -y --package @cloudinary/environment-config -- mcp start --transport stdio"]
+      "args": ["-c", "set -a && . .env && set +a && npx -y --registry https://registry.npmjs.org --package @cloudinary/environment-config -- mcp start --transport stdio"]
     }
   }
 }
@@ -817,12 +814,12 @@ Load only the template for the detected IDE.
   "mcpServers": {
     "cloudinary-asset-mgmt": {
       "command": "npx",
-      "args": ["-y", "--package", "@cloudinary/asset-management", "--", "mcp", "start", "--transport", "stdio"],
+      "args": ["-y", "--registry", "https://registry.npmjs.org", "--package", "@cloudinary/asset-management", "--", "mcp", "start", "--transport", "stdio"],
       "envFile": "${workspaceFolder}/.env"
     },
     "cloudinary-env-config": {
       "command": "npx",
-      "args": ["-y", "--package", "@cloudinary/environment-config", "--", "mcp", "start", "--transport", "stdio"],
+      "args": ["-y", "--registry", "https://registry.npmjs.org", "--package", "@cloudinary/environment-config", "--", "mcp", "start", "--transport", "stdio"],
       "envFile": "${workspaceFolder}/.env"
     }
   }
@@ -837,15 +834,15 @@ Load only the template for the detected IDE.
     "cloudinary-asset-mgmt": {
       "type": "stdio",
       "command": "sh",
-      "args": ["-c", "set -a && . .env && set +a && npx -y --package @cloudinary/asset-management -- mcp start --transport stdio"]
+      "args": ["-c", "set -a && . .env && set +a && npx -y --registry https://registry.npmjs.org --package @cloudinary/asset-management -- mcp start --transport stdio"]
     },
     "cloudinary-env-config": {
       "type": "stdio",
       "command": "sh",
-      "args": ["-c", "set -a && . .env && set +a && npx -y --package @cloudinary/environment-config -- mcp start --transport stdio"]
+      "args": ["-c", "set -a && . .env && set +a && npx -y --registry https://registry.npmjs.org --package @cloudinary/environment-config -- mcp start --transport stdio"]
     }
   }
 }
 ```
 
-**Windsurf** — add servers to `~/.codeium/windsurf/mcp_config.json` (global) or a project-level `mcp_config.json`. Windsurf does not support `envFile`; use the same shell-wrap pattern with `mcpServers` as the top-level key (same format as Claude Code).
+**Windsurf** — add servers to `~/.codeium/windsurf/mcp_config.json` (global) or a project-level `mcp_config.json`. Windsurf does not support `envFile`; use the same shell-wrap pattern with `mcpServers` as the top-level key (same format as Claude Code, including `--registry https://registry.npmjs.org`).
