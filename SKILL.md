@@ -43,9 +43,9 @@ Follow this hard order whenever work remains:
 2. Stage 1: AI tooling
 3. Stage 2: repo/framework check (ends with confirmation gate)
 4. Stage 3: detected-stack SDK + env file setup
-5. Stage 4: credentials + MCP activation (starts with D1 account check)
+5. Stage 4: credentials (starts with D1 account check)
 6. Stage 5: preset + validation artifacts + Done gate
-7. After the user replies `Done`: What's next
+7. After the user replies `Done`: What's next (includes MCP activation)
 
 At the end of every stage, use the stage completion format defined below.
 
@@ -64,17 +64,20 @@ Use this exact format at the end of every stage. No exceptions.
 - [x] Stage 1: AI tooling (MCP servers + skills)
 - [ ] Stage 2: Framework detection
 - [ ] Stage 3: SDK setup + environment file
-- [ ] Stage 4: Credentials + MCP activation
-- [ ] Stage 5: Validation
+- [ ] Stage 4: Credentials
+- [ ] Stage 5: Verify setup automatically
 
 **Stage X+1 — [stage name]**
 [One or two sentences describing what will happen in the next stage.]
 
-Reply to continue setup:
+---
+**Reply to continue setup:**
 
 [Concrete gate question]
 
-Answer with: [adapted cues]
+**Suggested reply:** [adapted cues]
+
+---
 ```
 
 **CRITICAL:** After the blocking prompt footer, you MUST STOP and wait for the user's response before proceeding to the next stage. Do not continue, do not start Stage X+1, do not run Stage X+1 setup code until the user answers.
@@ -130,20 +133,22 @@ Stage 3 complete:
 **Stage 3 gate question:** The blocking prompt footer at the end of Stage 3 must ask only whether the user is ready to continue — NOT whether they have a Cloudinary account. The account check belongs to Stage 4 D1. Use this exact gate question and answer cues:
 
 ```
-Reply to continue setup:
+---
+**Reply to continue setup:**
 
-Ready to move on to credentials and MCP activation?
+Ready to fill in your Cloudinary credentials?
 
-Answer with: Yes, let's continue · Not yet
+**Suggested reply:** Yes, let's continue
+
+---
 ```
 
-### After Stage 4 D1+D2+D3 — proceed to Stage 5
+### After Stage 4 D1+D2 — proceed to Stage 5
 
 All are true:
 
 - D1 complete: user has confirmed they have a Cloudinary account.
-- D2 complete: user has retrieved cloud name, API key, and API secret from Cloudinary Console.
-- D3 complete: user has filled `.env` with real credentials and activated MCP servers.
+- D2 complete: user has retrieved cloud name, API key, and API secret from Cloudinary Console and filled `.env` with real credentials.
 
 ### Before Stage 5 — SDK and credentials fully ready
 
@@ -152,7 +157,6 @@ All are true:
 - The workspace-root `.env` file exists with real credentials filled in.
 - The user confirms `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` are saved.
 - Any required client-side env placeholders are handled for the detected framework.
-- Either both Cloudinary MCP servers are reachable, or the D3 troubleshooting sequence in `references/stage-4-credentials.md` has been exhausted without success.
 
 Never read `.env` contents to verify this gate.
 
@@ -167,6 +171,6 @@ Read the appropriate reference file when entering each stage or when detailed ru
 | `references/stage-1-ai-tooling.md` | When entering Stage 1 — covers MCP server definitions, IDE config patterns, permission gate, and approval steps |
 | `references/stage-2-framework-check.md` | When entering Stage 2 — covers repo shape branching and React detection |
 | `references/stage-3-sdk-setup.md` | When entering Stage 3 — covers SDK install, env file setup, and Stage 4 gate enforcement |
-| `references/stage-4-credentials.md` | When entering Stage 4 — covers D1/D2/D3 credential and MCP activation steps |
+| `references/stage-4-credentials.md` | When entering Stage 4 — covers D1/D2 credential retrieval and `.env` setup |
 | `references/stage-5-validation.md` | When entering Stage 5 — covers preset creation, artifact requirements, and validation response format |
-| `references/after-done.md` | After the user replies `Done` — covers next-step bullets and doc links |
+| `references/after-done.md` | After the user replies `Done` — covers next-step bullets (VS Code ext, run app, activate MCP, build with Cloudinary) and cleanup guidance |

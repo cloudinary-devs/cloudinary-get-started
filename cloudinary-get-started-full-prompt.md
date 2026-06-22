@@ -18,7 +18,7 @@ This prompt helps a user set up Cloudinary in a new or existing project, or when
 
 Run Cloudinary onboarding as a guarded, SDK-agnostic stage flow. Detect the project stack first, then use the official Cloudinary SDK, framework docs, or Cloudinary docs that match that stack.
 
-Keep user-facing replies short, practical, and action-oriented. Do not narrate investigation steps. Recap completed work before asking the next question.
+Keep user-facing replies short, practical, and action-oriented. Use simple setup language, exact product names, and avoid jargon. Don't explain implementation details unless they help the user take the next step. Do not narrate investigation steps. Recap completed work before asking the next question. Preserve all required gates, security rules, stage order, exact footers, and stage completion formats.
 
 Follow this hard order whenever work remains:
 1. Silent explore — then present the setup checklist
@@ -40,17 +40,15 @@ Whenever a stage requires confirmation, stop immediately after BLOCKING_FOOTER a
 Whenever you must stop for an answer, finish with:
 
 ---
-Reply to continue setup:
+**Reply to continue setup:**
 
 <Concrete gate question>
 
-Answer with: <adapted cues>
+**Suggested reply:** <adapted cues>
 
 ---
 
 Use BLOCKING_FOOTER for Stage 1 approval, Stage 2 forks, Stage 4 prompts, MCP retry confirmations, Done, and any other wait state. Keep signup links, context, or short bullets above the footer. The footer must be final.
-
-For Stage 1 approval, the concrete gate question must be the permission sentence from Stage 1 exactly, with only the missing-items placeholder replaced.
 
 ## STAGE_COMPLETION_FORMAT
 
@@ -64,25 +62,18 @@ Use this exact format at the end of every stage. No exceptions.
 - [x] Stage 1: AI tooling (MCP servers + skills)
 - [ ] Stage 2: Framework detection
 - [ ] Stage 3: SDK setup + environment file
-- [ ] Stage 4: Credentials + MCP activation
-- [ ] Stage 5: Validation
+- [ ] Stage 4: Credentials
+- [ ] Stage 5: Verify setup automatically
 
 **Stage X+1 — [stage name]**
 [One or two sentences describing what will happen in the next stage.]
 
----
-Reply to continue setup:
-
-[Concrete gate question]
-
-Answer with: [adapted cues]
-
----
+[end with BLOCKING_FOOTER]
 
 Rules:
 - Mark every completed stage with `[x]` in the checklist; leave upcoming stages as `[ ]`.
 - The "Stage X complete" bullets are concrete and specific — name actual files, packages, and actions, not categories.
-- The "Stage X+1" intro previews the next stage scope before BLOCKING_FOOTER.
+- The "Stage X+1" intro previews the next stage scope before BLOCKING_FOOTER. Do not restate the gate question — the preview describes *what* will happen, the footer asks *whether* to proceed.
 - **Exception for the Stage 4 → Stage 5 transition:** replace the one or two sentence preview with the full validation plan as a bulleted list, drawn from the "What this stage does" section below. This gives the user a clear picture of everything validation covers before they confirm.
 - BLOCKING_FOOTER is always last.
 - **DO NOT execute the next stage until the user confirms.**
@@ -102,7 +93,7 @@ Update state only from actual repo checks, tool results, MCP behavior, or user c
 ### After Stage 1 — proceed to Stage 2
 
 Both are true:
-- Required Cloudinary skills are installed in the current IDE or agent environment's canonical skills location.
+- Required Cloudinary skills are installed in the current IDE or agent environment's canonical skills location (`.claude/skills/` for Claude Code; other locations for other IDEs).
 - Both Cloudinary MCP server configurations are present for `cloudinary-asset-mgmt` and `cloudinary-env-config`.
 
 ### After Stage 2 — proceed to Stage 3
@@ -125,20 +116,19 @@ Stage 3 complete:
 **Stage 3 gate question:** The BLOCKING_FOOTER at the end of Stage 3 must ask only whether the user is ready to continue — NOT whether they have a Cloudinary account. The account check belongs to Stage 4 D1. Use this exact gate question and answer cues:
 
 ---
-Reply to continue setup:
+**Reply to continue setup:**
 
-Ready to move on to credentials and MCP activation?
+Ready to fill in your Cloudinary credentials?
 
-Answer with: Yes, let's continue · Not yet
+**Suggested reply:** Yes, let's continue
 
 ---
 
-### After Stage 4 D1+D2+D3 — proceed to Stage 5
+### After Stage 4 D1+D2 — proceed to Stage 5
 
 All are true:
 - D1 complete: user has confirmed they have a Cloudinary account.
-- D2 complete: user has retrieved cloud name, API key, and API secret from Cloudinary Console.
-- D3 complete: user has filled `.env` with real credentials and activated MCP servers.
+- D2 complete: user has retrieved cloud name, API key, and API secret from Cloudinary Console and filled `.env` with real credentials.
 
 ### Before Stage 5 — SDK and credentials fully ready
 
@@ -146,7 +136,6 @@ All are true:
 - The workspace-root `.env` file exists with real credentials filled in.
 - The user confirms `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` are saved.
 - Any required client-side env placeholders are handled for the detected framework.
-- Either both Cloudinary MCP servers are reachable, or the D3 troubleshooting sequence has been exhausted without success.
 
 Never read `.env` contents to verify this gate.
 
@@ -164,7 +153,7 @@ Cloudinary setup must follow the detected project stack:
 ### Non-negotiable global rules
 
 - Never ask for, print, echo, log, quote, or display secrets.
-- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check only that the workspace-root `.env` file exists (using `ls` or equivalent), then rely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading or echoing their values.
+- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check ONLY that the workspace-root `.env` file exists (using `ls -f .env` or equivalent one-liner to verify existence only). Never read the file, never view its contents, never display any output from reading it. Rely entirely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading, echoing, or displaying their values.
 - Stage 3 may write placeholder `CLOUDINARY_*` values to `.env.example`. Client-side placeholders are allowed only when required by the detected framework, such as `VITE_*` for React/Vite.
 - Never place API secrets in source files, generated docs, MCP JSON, chat replies, scripts that echo output, logs, or validation artifacts.
 - If secrets are pasted into chat or committed, tell the user to rotate API credentials in the Cloudinary Console immediately without reproducing the secret values.
@@ -184,25 +173,16 @@ Cloudinary setup must follow the detected project stack:
 - Do not continue past a failed command or missing setup unless the user confirms how to proceed.
 - Report only actual command/API results. Never invent expected output.
 
-### Response style
-
-Keep user-facing responses plain, calm, and practical.
-- Prefer simple setup language over technical shorthand.
-- Use required product or file names exactly, but avoid extra jargon around them.
-- Don't explain implementation details unless they help the user take the next step.
-- Keep recaps short and focused on what was found, changed, or needed next.
-- Preserve all required gates, security rules, stage order, exact footers, and stage completion formats.
-
 ## Silent explore
 
 Silent explore is mandatory before repo classification. Inspect workspace files; do not infer from chat tone.
 
-Check at least:
+**Required checks — run these to verify existence:**
 - Dependency manifests: `package.json`, `requirements.txt`, `pyproject.toml`, `Pipfile`, `Gemfile`, `composer.json`, `pom.xml`, `build.gradle`, `.csproj`, `go.mod`, or equivalent.
 - Entrypoints and framework signals: routes, templates, app bootstrap files, server files, static front-end files, build config, and imports.
 - Cloudinary in code: Cloudinary dependency plus application usage such as SDK config, upload calls, URL generation, transformation builders, or templates/components referencing Cloudinary URLs.
 - React: `package.json`, React dependencies, JS/TS imports, JSX/TSX usage, or explicit user selection.
-- AI staging: `.agents/skills/` containing Cloudinary pack folders.
+- AI staging: `.claude/skills/` (Claude Code), `.agents/skills/`, or other IDE-specific skill locations for Cloudinary pack folders.
 
 Record these classifications:
 1. Repo shape: `empty`, `code-no-cloudinary`, or `code-with-cloudinary`
@@ -228,33 +208,13 @@ All lanes need cloud name, API key, and API secret in local `.env` for MCP. Fron
 
 ### Framework-specific classification guidance
 
-Server-rendered frameworks are not automatically back-end API-only.
-
-Classify Flask, Django, Rails, Laravel, Spring MVC, ASP.NET MVC, Phoenix, and similar frameworks as `full-stack` when the repository contains user-facing pages, templates, views, or server-rendered UI.
-
-Examples:
-- Flask + Jinja templates → `full-stack`
-- Django + templates → `full-stack`
-- Rails + views → `full-stack`
-- Laravel + Blade templates → `full-stack`
-
-Classify these frameworks as `back-end API-only` only when the application primarily exposes APIs and does not contain user-facing views, templates, or pages.
-
-Examples:
-- Flask REST API returning JSON only → `back-end API-only`
-- Django REST Framework API without templates → `back-end API-only`
-- Rails API mode → `back-end API-only`
+Server-rendered frameworks are not automatically back-end API-only. Classify them as `full-stack` when the repository contains user-facing pages, templates, views, or server-rendered UI. Classify as `back-end API-only` only when the application primarily exposes APIs without user-facing views, templates, or pages.
 
 ## Stage 1 — AI tooling
 
-Before SDK or credential setup, verify that the current IDE or agent environment has:
-1. Cloudinary MCP servers available for asset management and environment configuration.
-2. Cloudinary skills available for docs and transformations. Install with: `npx skills add cloudinary-devs/skills`. After installation, make sure the required skills are available before continuing.
-3. Credentials can reach the MCP servers after Stage 4.
+Verify that the current IDE or agent environment has Cloudinary MCP servers and skills. Before approval, inspect only; do not modify files or run install/add commands.
 
-Before approval, inspect only; do not modify files or run install/add commands.
-
-If any AI tooling is missing, stop and ask permission before installing or changing anything.
+If any AI tooling is missing, stop and ask permission before installing or changing anything. **Do not ask framework or stack questions in this stage** — focus only on AI tooling.
 
 After approval, set up the missing Cloudinary MCP servers and skills using the current IDE or agent environment's standard conventions. Follow official Cloudinary MCP guidance when needed:
 https://cloudinary.com/documentation/cloudinary_llm_mcp#local_mcp_servers
@@ -272,16 +232,16 @@ Credential handling:
 - If the environment requires shell expansion, load the project `.env` before starting MCP and reference environment variables rather than literal secrets.
 - Verify both MCP server configurations exist in the current IDE or agent environment before continuing. Do not require credential-backed MCP responses until Stage 4, after real credentials are saved.
 
-**Do not tell the user to activate, reconnect, or restart MCP servers at Stage 1.** MCP servers cannot connect until real credentials are in `.env` — that happens in Stage 4. MCP activation instructions belong in Stage 4 (D3) only.
+**Do not tell the user to activate, reconnect, or restart MCP servers at Stage 1.** MCP servers are installed but cannot connect until real credentials are in `.env` — that happens in Stage 4. MCP activation instructions belong in the "What's next" section after Stage 5 is complete.
 
 **Unknown IDE** — if the IDE is not recognized, ask one question before continuing:
 
 ---
-Reply to continue setup:
+**Reply to continue setup:**
 
 Which IDE or agent are you using?
 
-Answer with: <IDE name>
+**Suggested reply:** <IDE name>
 
 ---
 
@@ -291,11 +251,16 @@ Then apply the closest matching pattern from Appendix A. If truly unknown, provi
 
 Hard stop. Do not edit MCP config, project `.mcp.json`, skill folders, `.gitignore`, or `.agents/`; do not run `npx skills add`; do not install marketplace plugins; do not continue to Stage 2/3/4/5.
 
-Send only an optional one-line lead-in and the permission sentence below inside BLOCKING_FOOTER. Then stop until explicit approval such as `yes`, `go ahead`, or `install`.
+Output the BLOCKING_FOOTER below and nothing else. Do NOT write a sentence or paragraph containing the question before the footer — the footer IS the question. Do not restate, paraphrase, or preview the question outside the footer block.
 
-Permission sentence, verbatim except for the placeholder:
+---
+**Reply to continue setup:**
 
-> You're missing a few of our AI tools that make the coding assistant better at working with Cloudinary as you build. Can I add <missing MCP servers/skills> to make Cloudinary guidance and tasks smoother in this project?
+You're missing <missing MCP servers/skills> that make the coding assistant better at working with Cloudinary. Can I add these to make Cloudinary guidance and tasks smoother in this project?
+
+**Suggested reply:** Yes, go ahead · No, skip this
+
+---
 
 Placeholder rules:
 - Name the actual missing items, for example `Cloudinary MCP servers` or `cloudinary-docs and cloudinary-transformations via npx skills add`.
@@ -303,14 +268,22 @@ Placeholder rules:
 - After approval, complete the full setup needed for the current IDE or agent environment, including required MCP config, skills installation, skill relocation from `.agents/skills/`, cleanup, `.gitignore` updates, and verification.
 
 After approval only:
-- Add or repair the required MCP server config using the current IDE or agent environment's standard project-level MCP mechanism.
+- Add or repair the required MCP server config using the current IDE or agent environment's standard project-level MCP mechanism. Include `.env` reference as described in Appendix A.
 - Preserve unrelated MCP servers when editing config.
 - Run `npx skills add cloudinary-devs/skills` when required skills are missing.
-- Sync any Cloudinary skill folders from `.agents/skills/` into the current IDE or agent environment's canonical skills location.
-- Verify `SKILL.md` exists under each required Cloudinary skill ID in the canonical skills location.
+- For Claude Code: Skills are installed to `.claude/skills/` (the canonical location for Claude Code). Verify the directory exists and `SKILL.md` files exist under each required Cloudinary skill ID. **Do not report success until you have verified the files are present.**
+- For other IDEs/agents: Sync any Cloudinary skill folders from `.agents/skills/` into the current environment's canonical skills location and verify `SKILL.md` exists under each required skill.
 - Add `.agents/skills/cloudinary-*/` to root `.gitignore` if not already covered. Do not add `.agents/` itself — the user may have other content there they want tracked.
 - Never leave duplicate Cloudinary skill folders in `.agents/skills/` after canonical installation succeeds.
 - Never stack marketplace plugin installs on top of CLI skills.
+
+**Verification requirement:** Before marking Stage 1 complete, confirm that both:
+1. The MCP config file exists for the detected IDE with both server definitions present
+2. For Claude Code: `.claude/skills/` directory exists with required skill folders and `SKILL.md` files
+
+If either is missing, report the actual state and do not proceed to Stage 1 completion.
+
+Tell the user: "The MCP servers are now installed in your project config, but they need real credentials to start. We'll fill those in during Stage 4, and then activate the servers in the next steps after setup is complete."
 
 If a prior assistant skipped this gate and edited files without approval, apologize briefly, acknowledge approval should have been requested first, and do not defend the premature edits.
 
@@ -334,7 +307,7 @@ Run only after Stage 1 is resolved and after checking both repo evidence and the
 
 Do not include credential or MCP handoff in Stage 2.
 
-At the end of Stage 2, use STAGE_COMPLETION_FORMAT with BLOCKING_FOOTER. Ask the user to confirm readiness to proceed to Stage 3. Example gate question: "Ready to set up the SDK and create the environment file?"
+At the end of Stage 2, use STAGE_COMPLETION_FORMAT with BLOCKING_FOOTER. Ask the user to confirm readiness to proceed to Stage 3. Example gate question: "Ready to set up the SDK and the environment file?"
 
 **CRITICAL: After sending STAGE_COMPLETION_FORMAT and BLOCKING_FOOTER, STOP. Do not write any Stage 3 code, install packages, create files, or take any Stage 3 action until the user explicitly replies confirming readiness.**
 
@@ -344,13 +317,24 @@ Prerequisites: Stage 1 complete, Stage 2 complete with user confirmation to proc
 
 This stage sets up placeholder environment files. Real credentials are added in Stage 4 after the user confirms their Cloudinary account and retrieves API keys.
 
-**Messaging rule:** When describing this stage to the user — in the stage intro, stage completion summary, or any user-facing text — always say `.env.example`, never `.env`. Example: "I'll create an `.env.example` file with placeholder credentials." Never say "I'll create an `.env` file" or "set up your `.env`" in this stage.
+**Messaging rule:** In Stage 3 intro and completion, mention `.env.example` by name; don't promise to create `.env` since that's conditional on what already exists. Stage 3 intro example: "I'll install the Cloudinary SDK for [Framework], set up your app with Cloudinary configuration, and create `.env.example` with placeholder credentials. Whether we update your existing `.env` file will depend on what's already there."
+
+**SDK configuration:** Always do this automatically, regardless of `.env` choice:
+- Install the Cloudinary SDK package
+- Create or update app entry point with Cloudinary configuration and imports
+- Add dotenv loading if needed
+- Update dependency files (requirements.txt, package.json, etc.)
+- Update `.gitignore`
+
+**`.env` file handling:** Conditional based on user preference:
+- If no `.env` file exists in the repo, create both `.env` and `.env.example` with Cloudinary placeholders. This avoids an extra copy step later.
+- If a `.env` file already exists, ask the user if it's OK for us to add the Cloudinary placeholder credentials to their `.env` file (without touching other content), or if they prefer to do it manually themselves. Store their preference to inform Stage 4 instructions.
+- Always create or update `.env.example` with the full Cloudinary placeholder block.
 
 Use the detected stack as the source of truth:
 - Install the official Cloudinary SDK/package for the detected language/framework, or follow the official Cloudinary docs when a first-party SDK is not applicable.
 - Add imports/configuration in the project's established style and file locations.
-- Write placeholder env values to `.env.example` at the project root — not to `.env`. Always include `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` placeholders for MCP/server-side use.
-- Never create, copy, rename, or write `.env` in Stage 3. Only create or update `.env.example`.
+- Include `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` placeholders for MCP/server-side use in both `.env.example` and `.env` (if created or updated per above).
 - Add client-exposed placeholders only when the detected framework requires them. Example: React/Vite uses `VITE_*` per the official Cloudinary React/Vite guidance.
 - Do not request real credentials in Stage 3.
 - Use the official Cloudinary SDK/docs and the repo's existing package manager/build conventions.
@@ -360,7 +344,7 @@ Use the detected stack as the source of truth:
 When Stage 3 completes for a frontend-only setup, include this note in the user-facing response:
 
 ```
-**Important for frontend applications:** The `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` placeholders in `.env.example` are included for MCP and server-side Cloudinary operations only. Never expose these values in client-side code, browser bundles, or public repositories.
+**Important for frontend applications:** The `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` environment variables in your `.env` file are for MCP and server-side operations only. Never expose these values in client-side code, browser bundles, logs, or public repositories—keep them in `.env` only.
 
 Only `CLOUDINARY_CLOUD_NAME` — and framework-specific client variables such as `VITE_CLOUDINARY_CLOUD_NAME` when applicable — are safe to use in frontend code.
 ```
@@ -387,9 +371,72 @@ For other client frameworks, include their env convention only when the app need
 
 `.env.example` contains only placeholders — it is safe to commit to version control.
 
+### `.env` file setup
+
+During Stage 3, handle `.env` as follows:
+
+**If no `.env` file exists:**
+1. Create `.env` at the project root with the Cloudinary placeholder block (same content as `.env.example`)
+2. Also create `.env.example` with the full placeholder block
+3. Tell the user: "I've created both `.env` and `.env.example` with Cloudinary placeholders. You'll fill in your real credentials in the next step."
+
+**If `.env` already exists:**
+1. Check that `.env` exists (do not read its contents)
+2. Use BLOCKING_FOOTER to ask the user for their preference:
+
+---
+**Reply to continue setup:**
+
+Can I add the Cloudinary placeholder credentials to your `.env` file (without touching anything else)? You'll replace them with real credentials in the next step.
+
+**Suggested reply:** Yes, go ahead and add them · No, I'll add them myself manually
+
+---
+
+3. Store the user's choice to inform Stage 4 D2 instructions:
+   - If **they approve**: add the Cloudinary placeholder block to both `.env` and `.env.example` in Stage 3
+   - If **they prefer to do it themselves**: create only `.env.example`, and they will copy/paste the placeholders in Stage 4
+
+When done, tell the user which files were created/updated and whether they'll fill in placeholders automatically or manually in Stage 4.
+
 ### `.gitignore`
 
 Ensure `.env` is listed in `.gitignore` at the project root. If not present, add it. Do not add `.env.example` to `.gitignore` — it should be committed.
+
+### Loading environment variables in your app
+
+**Backend/server frameworks only.**
+
+Configure the server to load credentials from `.env` at startup using the standard tool for the detected framework/language:
+
+**Python (Flask, Django):** Add `python-dotenv` to `requirements.txt` and call `load_dotenv()` in the app's entry point (e.g., top of `app.py` or in `__init__.py`):
+```python
+from dotenv import load_dotenv
+load_dotenv()
+```
+
+**Node.js (Express, Next.js):** Add `dotenv` to `package.json` via npm and call it at the very top of your entry file:
+```javascript
+require('dotenv').config();
+```
+
+**Ruby/Rails:** Add `dotenv-rails` to the `Gemfile`. Rails automatically loads `.env` on startup when the gem is present.
+
+**PHP/Laravel:** Laravel automatically loads `.env` at the project root. For other PHP frameworks, add `vlucas/phpdotenv` via Composer and load it in your bootstrap file.
+
+**Go:** Add a `.env` loader package (e.g., `github.com/joho/godotenv`) to `go.mod` and call it in `main()`:
+```go
+godotenv.Load()
+```
+
+**Java/Spring:** Spring Boot automatically loads `.env` properties if you add them to `application.properties` or `application.yml`. Alternatively, use the `spring-dotenv` library.
+
+**.NET:** Add the `DotNetEnv` NuGet package and load in `Program.cs`:
+```csharp
+DotNetEnv.Env.Load();
+```
+
+This ensures the app can access `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` via environment variables at runtime.
 
 ### Comments in generated files
 
@@ -407,11 +454,11 @@ The Stage 3 BLOCKING_FOOTER must ask only whether the user is ready to continue 
 
 Transition to Stage 4 only after using STAGE_COMPLETION_FORMAT.
 
-## Stage 4 — credentials and MCP activation
+## Stage 4 — credentials
 
 Ask one question per turn and wait for the answer. Never bundle multiple yes/no gates. Every wait ends with BLOCKING_FOOTER.
 
-Cloudinary MCP needs a cloud name, API key, and API secret before it can connect. Do not ask the user to enter credentials, create `.env`, edit files, or activate MCP until D1 and D2 are complete.
+In this stage, verify the user has a Cloudinary account, help them retrieve their API credentials, and guide them to fill `.env`. Real credentials in `.env` enable Stage 5 verification and allow MCP activation later in "What's next."
 
 ### Stage 4 execution order (strict)
 
@@ -434,96 +481,61 @@ Do you have a Cloudinary account?
 
 If not, sign up for free here: [Create a free Cloudinary account](https://cloudinary.com/users/register/free?utm_source=cursor&utm_medium=skill&utm_campaign=cloudinary-getting-started)
 
-Answer with: Yes, I have an account · Yes, I just finished sign-up
+**Suggested reply:** Yes, I have an account · Yes, I just finished sign-up
 
 Go to D2 only after the user confirms they have an account.
 
-### D2 — API keys
+### D2 — Get credentials and fill `.env`
 
 Grab your **cloud name**, **API key**, and **API secret** from the Cloudinary Console: [Cloudinary Console — API Keys](https://console.cloudinary.com/settings/api-keys)
 
-Reply when you have those values saved locally.
-
-Answer with: Got them · Ready
-
 **IMPORTANT:** Use the exact link above — `https://console.cloudinary.com/settings/api-keys`. Do not tell the user to go to the "Dashboard tab" or any other location.
 
-Do not ask the user to paste secrets into chat. Go to D3 once the user confirms.
+Once they have their credentials, give instructions based on the Stage 3 `.env` setup choice:
 
-### D3 — Save credentials and activate MCP
+**If we added placeholders to `.env` in Stage 3 (automated):**
 
-Run only after Stage 3 placeholders exist in `.env.example`, D1 is satisfied, and D2 is satisfied.
+Tell the user:
+"Open `.env` at your project root and replace the placeholder values with your real credentials:
+- `CLOUDINARY_CLOUD_NAME` = your cloud name
+- `CLOUDINARY_API_KEY` = your API key
+- `CLOUDINARY_API_SECRET` = your API secret
+- For React/Vite: also replace `VITE_CLOUDINARY_CLOUD_NAME`
 
-Present D3 as two explicit numbered instructions with bold imperative headers. Detect the IDE from context and show only that IDE's activation steps.
+Save the file when done."
 
-**Instruction 1: Fill in your credentials**
+**If they said they'd do it manually in Stage 3:**
 
-If no `.env` exists yet: tell the user to rename `.env.example` to `.env`, then open it and replace the placeholder values with their real credentials.
+Tell the user:
+"Open `.env.example` and copy the Cloudinary block into your `.env` file. Then replace the placeholder values with your real credentials:
+- `CLOUDINARY_CLOUD_NAME` = your cloud name
+- `CLOUDINARY_API_KEY` = your API key
+- `CLOUDINARY_API_SECRET` = your API secret
+- For React/Vite: also add and replace `VITE_CLOUDINARY_CLOUD_NAME`
 
-If `.env` already exists: tell the user to open `.env.example`, copy the Cloudinary lines into their `.env`, and replace the placeholders with their real credentials.
+Save the file when done."
 
-Always list the specific variables to fill:
-- `CLOUDINARY_CLOUD_NAME` — their cloud name
-- `CLOUDINARY_API_KEY` — their API key
-- `CLOUDINARY_API_SECRET` — their API secret
-- For React/Vite: also `VITE_CLOUDINARY_CLOUD_NAME` and any other client placeholder the app needs
-- For other client frameworks: fill their client-env equivalents only when the app needs client-side Cloudinary values
-
-**Instruction 2: Activate the MCP servers**
-
-Open with this as a bolded instruction, not prose explanation:
-**"Save the file, then activate the MCP servers — they load `.env` at startup and need to start with your real credentials in place."**
-
-Show only the steps for the detected IDE, formatted as numbered imperatives:
-
-**Claude Code**
-1. Save `.env`
-2. Quit Claude Code completely — Cmd+Q on Mac, Alt+F4 on Windows
-3. Restart Claude Code and reopen this project
-4. Open `.mcp.json` at the project root and click **Start** next to both `cloudinary-asset-mgmt` and `cloudinary-env-config`
-5. Type `/mcp` in the chat input to open the MCP panel — both servers should show **Connected**
-6. Find this conversation in Claude Code's chat history to continue
-
-**Cursor**
-1. Save `.env`
-2. Open the command palette: Cmd/Ctrl+Shift+P
-3. Run **MCP: Restart Server** for `cloudinary-asset-mgmt`, then repeat for `cloudinary-env-config`
-
-**VS Code**
-1. Save `.env`
-2. Open the command palette: Cmd/Ctrl+Shift+P
-3. Run **MCP: List Servers** → select `cloudinary-asset-mgmt` → Restart, then repeat for `cloudinary-env-config`
-
-**Windsurf**
-1. Save `.env`
-2. Fully close Windsurf
-3. Reopen Windsurf — MCP starts fresh and picks up the new credentials
-
-**Other IDE**
-1. Save `.env`
-2. Fully restart the IDE — MCP must start fresh to load the new credentials
-
-End D3 with BLOCKING_FOOTER:
+End with BLOCKING_FOOTER:
 
 ---
-Reply to continue setup:
+**Reply to continue setup:**
 
-Are both cloudinary-asset-mgmt and cloudinary-env-config showing as Connected in /mcp?
+Done filling in your credentials?
 
-Answer with: yes · no · still connecting
+**Suggested reply:** yes, saved · I need help
 
 ---
 
-If the user reports MCP still does not connect, work through this troubleshooting sequence before stopping:
-- Confirm `.env` is at the project root (not `.env.local`, `.env.development`, or a parent directory)
-- Confirm the MCP config file exists and is well-formed for the detected IDE
-- Check `npx` is available in the shell that the IDE uses: `which npx` or `npx --version`
-- Perform a full restart of the IDE's MCP process, not just a reload
-- Ask the user to retry and confirm connection status
+Confirm that `.env` exists (using `ls -f .env` to verify existence only) and the user confirms all three `CLOUDINARY_*` keys are filled. Never read, view, display, or claim to have verified `.env` contents. Once confirmed by the user, tell them: "Great! Next we'll move to setup verification. The MCP servers will be activated afterward in the next steps."
 
-If MCP still does not connect after the troubleshooting steps above, proceed to Stage 5. Stage 5 will complete the preset step and cloud name lookup using script-based fallbacks against the credentials already in `.env`.
+**Critical — enforce strictly:**
+- Never say "I can see...", "I verified...", "Your credentials show...", or "I checked that..." — these all imply reading the file
+- Never use `cat`, `grep`, `head`, `tail`, or any command that displays file contents
+- Never display any output from running `ls` or other file checks
+- Only acknowledge the user's explicit confirmation that they saved the credentials
+- The ONLY verification you do is: file exists (using `ls -f` silently) and user confirms it's filled
 
-Infer readiness from `.env` existence, user confirmation, and MCP behavior. Never read `.env` contents. Do not require running the app/server here.
+Infer readiness from `.env` existence check, user confirmation, and MCP behavior. Never read `.env` contents. Do not require running the app/server here.
 
 At the end of Stage 4, use STAGE_COMPLETION_FORMAT. For the Stage 5 preview section, use the full "What this stage does" bullet list from Stage 5 verbatim — do not write a generic sentence.
 
@@ -533,19 +545,18 @@ Always attribute credential and .env actions to the user — never to the assist
 
 Correct examples:
 - D1: You confirmed you have a Cloudinary account
-- D2: You retrieved your cloud name, API key, and API secret from the Cloudinary Console
-- D3: You filled `.env` with real credentials and activated both MCP servers (`cloudinary-asset-mgmt` and `cloudinary-env-config` connected)
+- D2: You retrieved your cloud name, API key, and API secret, and filled `.env` with real credentials
 
 Incorrect (do not use):
 - "Confirmed Cloudinary account" (ambiguous)
-- "Filled .env with real credentials" (implies the assistant touched the file)
+- "Filled .env with real credentials" (when said by assistant, implies the assistant touched the file)
 
-## Stage 5 — validation
+## Stage 5 — verify setup automatically
 
 **What this stage does:**
 
 **All lanes:**
-- **Verify MCP connection** — confirm both Cloudinary MCP servers are live by creating the `getting_started` unsigned upload preset
+- **Create upload preset** — create the `getting_started` unsigned upload preset via Admin API
 - **Confirm media delivery** — generate original and transformed image URLs and confirm they resolve correctly
 - **Measure optimization savings** — fetch both URLs and record real size, format, and dimensions to show how much Cloudinary's optimization reduces file size
 - **Document the setup** — write `docs/cloudinary-environment.json` with all verification details, no secrets stored
@@ -558,30 +569,15 @@ Incorrect (do not use):
 
 *Front-end only lanes skip the Admin API verification entirely.*
 
-Prerequisite: enforce the Stage 5 gate, unless shortcut context proves MCP is already authenticated.
-
-Read MCP tool schemas before calling. Use MCP tools first.
+Prerequisite: enforce the Stage 5 gate. Credentials are now available in `.env`.
 
 **Delivery lane check:** Use the `delivery_lane` state tracked from silent explore. Only attempt Admin API verification for `back-end API-only` or `full-stack` lanes. For `front-end only` lanes, skip Admin API calls entirely and set `admin_api.skipped_reason: front_end_only_lane` in the environment JSON.
 
-### If MCP is blocked
+### Preset creation and Admin API calls
 
-Work through this sequence before treating MCP as unavailable:
+Preset creation and all Admin API calls use the credentials in `.env`. Load them via the same shell-wrap pattern (`set -a && . .env && set +a`). Never read or display their values.
 
-1. **Send IDE-specific fix guidance** (see Appendix A) and ask the user to retry. End with BLOCKING_FOOTER.
-2. **If still blocked after the fix**, verify the most common causes:
-   - `.env` exists at the project root (do not read it; ask the user to confirm all three `CLOUDINARY_*` keys are filled)
-   - The MCP config file is present and well-formed for the detected IDE
-   - `npx` is available in the shell (`which npx` or `where npx`)
-   - The IDE's MCP process was fully restarted, not just reloaded
-3. **Ask the user to retry** once more. End with BLOCKING_FOOTER.
-4. **Only after two failed retry attempts**, use the script-based fallbacks below. Note degraded mode in `docs/cloudinary-environment.json`.
-
-### Script-based fallbacks (only after MCP troubleshooting is exhausted)
-
-The credentials in `.env` are sufficient to complete Stage 5 without MCP. Load them via the same shell-wrap pattern (`set -a && . .env && set +a`). Never read or display their values.
-
-**Preset creation (`cloudinary-env-config` blocked):**
+**Preset creation via Admin API:**
 
 ```bash
 set -a && . /path/to/project/.env && set +a && \
@@ -594,14 +590,14 @@ curl -s -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload
 
 Record `"preset_source": "admin_api_script"` in `docs/cloudinary-environment.json`.
 
-**Cloud name (`cloudinary-asset-mgmt` blocked):** `CLOUDINARY_CLOUD_NAME` is already in `.env`. Load it with the shell-wrap and use it to construct the preview URLs. Do not ask the user.
+**Cloud name:** `CLOUDINARY_CLOUD_NAME` is already in `.env`. Load it with the shell-wrap and use it to construct the preview URLs. Do not ask the user.
 
-Measurements, Admin API checks, and artifact creation never require MCP and must always run regardless of MCP status. For Admin API config checks, always use the detected project's Cloudinary SDK first (loading credentials from `.env` via the SDK's config method). If the SDK call fails or the SDK is not available, fall back to curl-based scripts only as a last resort.
+Measurements, Admin API checks, and artifact creation never require MCP and must always run regardless of IDE or agent state. For Admin API config checks, always use the detected project's Cloudinary SDK first (loading credentials from `.env` via the SDK's config method). If the SDK call fails or the SDK is not available, fall back to curl-based scripts only as a last resort.
 
-### When MCP works
+### Execute Stage 5
 
-1. Create or verify unsigned upload preset `getting_started` tagged `Getting Started`.
-2. Execute Stage 5 according to the recorded delivery lane.
+1. Create unsigned upload preset `getting_started` tagged `Getting Started` via Admin API script.
+2. Execute Stage 5 according to the recorded delivery lane (fetch asset, measure, generate URLs, create docs).
 
 ### Artifact requirements
 
@@ -618,17 +614,16 @@ Do not skip the `samples/coffee` fetch and go straight to MCP search. This is a 
 
   **MANDATORY: Do not proceed with a broken or placeholder image URL. You must find a real deliverable asset before continuing.**
 
-  1. Use the `mcp__cloudinary-asset-mgmt__list-images` or `mcp__cloudinary-asset-mgmt__search-assets` MCP tool to retrieve a real image asset from the user's cloud. Prefer assets from the `samples` folder. Pick the first result with resource_type `image` and access_mode `public`.
-  2. If MCP returns no results (empty cloud), tell the user their cloud has no uploaded images yet and ask them to upload at least one image before validation can complete. End with BLOCKING_FOOTER. Wait for confirmation before continuing.
-  3. If MCP is unavailable, use the Admin API (`GET https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/resources/image?max_results=1`) with credentials loaded via shell-wrap. Parse the first result's `public_id`.
-  4. Use the selected public ID consistently for all preview URLs, validation artifacts, generated documentation, measurements, chat output, and preview HTML.
-  5. Never use a URL that returned a non-200 response anywhere in Stage 5 artifacts.
+  1. Use the Admin API (`GET https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/resources/image?max_results=1`) with credentials loaded via shell-wrap to retrieve a real image asset from the user's cloud. Parse the first result's `public_id`.
+  2. If the Admin API returns no results (empty cloud), tell the user their cloud has no uploaded images yet and ask them to upload at least one image before validation can complete. End with BLOCKING_FOOTER. Wait for confirmation before continuing.
+  3. Use the selected public ID consistently for all preview URLs, validation artifacts, generated documentation, measurements, chat output, and preview HTML.
+  4. Never use a URL that returned a non-200 response anywhere in Stage 5 artifacts.
 
-  Record the selected `public_id`, original URL, transformed URL, selection source (`samples/coffee`, `mcp_list`, or `admin_api_list`), and reason in `docs/cloudinary-environment.json`.
+  Record the selected `public_id`, original URL, transformed URL, selection source (`samples/coffee` or `admin_api_list`), and reason in `docs/cloudinary-environment.json`.
 
 - Apply this exact transformed URL chain between `/upload/` and the selected public ID: `b_gen_fill,c_pad,w_1000,h_1000,y_-100/l_text:Arial_72_bold:Adapt%20everywhere,co_white/e_shadow:50/fl_layer_apply,g_south_west,x_80,y_140/l_text:Arial_34:Dynamic%20media%20built%20in%20real%20time,co_rgb:f5f5f5/e_shadow:35/fl_layer_apply,g_south_west,x_84,y_90/f_auto,q_auto`.
 - Keep the original URL, transformed URL, and transformation text identical in chat, `docs/cloudinary-environment.json`, and preview HTML.
-- Always create or update `docs/cloudinary-environment.json` when Stage 5 runs. Include `schema_version: 1`, non-secret `cloud_name`, upload preset details from MCP `get-upload-preset-details`, `preview` values, and real `measurements`. Never write secrets.
+- Always create or update `docs/cloudinary-environment.json` when Stage 5 runs. Include `schema_version: 1`, non-secret `cloud_name`, upload preset name (`getting_started`), `preview` values, and real `measurements`. Never write secrets.
 - For back-end API-only and full-stack lanes, check Admin API config with `settings=true` using the detected project's Cloudinary SDK (not MCP). Load credentials from `.env` via the SDK's config method. The response shape is `{ "settings": { "folder_mode": "dynamic" | "fixed" }, ... }` — read `folder_mode` from `response.settings.folder_mode`, not the top-level response object. Persist `admin_api.reachable` and `admin_api.folder_mode` as `dynamic`, `fixed`, or `null` with a short error. Docs: https://cloudinary.com/documentation/admin_api#get_product_environment_config_details.
 
   **Correct Admin API endpoint:** `GET https://api.cloudinary.com/v1_1/{cloud_name}/config?settings=true` authenticated with `-u API_KEY:API_SECRET`. Do NOT use `/admin/settings`, `/admin/account_info`, or any other path — those return 404.
@@ -640,7 +635,7 @@ Do not skip the `samples/coffee` fetch and go straight to MCP search. This is a 
   ```
   Parse `response.settings.folder_mode` from the JSON result.
 - For front-end-only lanes, skip Admin API config. Omit `admin_api` or set `admin_api.skipped_reason: front_end_only_lane`, and mention the skip in validation.
-- Measure both preview URLs with a local script in a suitable project language. Use this Chrome-like `Accept` header: `image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8`. Record real bytes, content type, and dimensions when available. Never fabricate measurements.
+- Measure both preview URLs with a local script in a suitable project language. Use this Chrome-like `Accept` header: `image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8`. Record real bytes, content type, and dimensions when available. Never fabricate measurements. **Important:** The original image format (e.g., JPEG) will differ from the transformed format (e.g., WebP) because the transformation chain includes `f_auto`, which automatically selects the optimal format. Record both formats separately in measurements.
 - For front-end-only and full-stack lanes, create or update `docs/cloudinary-getting-started-preview.html`. It must use the same two URL literals, fetch both URLs with the same `Accept` header, use `createImageBitmap` for browser stats when possible, show savings, and include a `#stage-5-integration-snippet` section. API-only lanes skip this file.
 - Never add the standalone preview to framework route code. It belongs only in `docs/`.
 - **Comments in generated files:** Every file created or significantly changed in Stage 5 must include short, useful inline comments explaining what each section does and why. Apply this to `docs/cloudinary-getting-started-preview.html` (explain each section: image display, measurement fetch, SDK snippet, stats), `docs/cloudinary-environment.json` (top-level comment block describing what the file contains and where to find docs), and any validation scripts. Focus on the non-obvious — why a particular URL pattern is used, what the Accept header achieves, what folder_mode means. Do not comment every line.
@@ -649,48 +644,72 @@ Do not skip the `samples/coffee` fetch and go straight to MCP search. This is a 
 - Optional validation scripts may wrap measurements and Admin checks. Name them according to the project ecosystem; do not assume npm unless the repo is npm-based.
 - In chat for front-end/full-stack lanes, echo the canonical transformed URL. Also echo `folder_mode` when Admin config ran.
 
-### Validation response format
+### Verification response format
 
-If MCP troubleshooting is still in progress (user has not yet retried), send only MCP-fix guidance — do not show validation output yet.
+For full success, use this exact structure — no repetition, no sections repeated elsewhere:
 
-If Stage 5 completed via script-based fallbacks, use this format with a note that preset data came from the Admin API script rather than MCP.
+**Stage 5 complete:**
 
-For full success or equivalent shortcut completion, use the structure below. Every item starts with a bold label and colon. Omit items that did not apply or did not run this round. Never use the word "wired" — use "set up" instead.
+- Confirmed `samples/coffee` returns 200 — used as the preview asset (or: used Admin API to find asset `<public_id>`)
+- Created `getting_started` unsigned upload preset via Admin API
+- Admin API config reachable — `folder_mode: <value>` (omit for front-end-only lanes)
+- Measured original and transformed URLs: `<original size/format/dimensions>` → `<transformed size/format/dimensions>` — `<% savings>`
+- Created `docs/cloudinary-environment.json`
+- Created `docs/cloudinary-getting-started-preview.html` (omit for back-end API-only lanes)
 
-1. **MCP servers:** Connected! Briefly say what they were used for this round. If preset was created rather than verified, say so. If fallback script was used instead, note that here.
-2. **Admin API:** Reachable (or not, with the error). If reachable, say "Used the config endpoint to check your product environment — `folder_mode` is `<value>`." Omit for front-end-only lanes.
-3. **Original image:** The original URL as a plain URL on its own line.
-4. **Transformed image:** The transformed URL as a plain URL on its own line.
-5. **Measurements:** A compact two-row table (Original / Transformed) with columns: size in KB, format, and dimensions when available. End with a one-line savings summary (e.g., "66.6% smaller — JPEG 161 KB → WebP 54 KB"). Confirm values came from a real fetch with Chrome-like `Accept`, not guesses.
-6. **<Stack> SDK snippet:** A minimal SDK-first code block that generates the delivery URL through the detected stack's Cloudinary SDK. Label it with the actual stack name. Server lanes must use the SDK; never use a hardcoded static URL as the only integration.
-7. **Preview:** "Open `docs/cloudinary-getting-started-preview.html` in a browser to see the original and transformed images side by side with live stats." Omit for back-end API-only lanes.
-8. **Environment docs:** "Open `docs/cloudinary-environment.json` to see all verification details — no secrets stored."
-9. One short congratulations sentence confirming the detected stack is set up with Cloudinary.
-10. Done gate with a conversational closing prompt, e.g.: "Let me know when you're done reviewing your configuration and I'll suggest some next steps." Format as a simple prompt without BLOCKING_FOOTER (no "Reply to continue setup:" phrase — setup is complete).
+Your **<Stack>** app is configured with Cloudinary and ready to deliver optimized media.
 
-Done gate format example:
+**Original image:**
 ```
+<plain URL>
+```
+
+**Transformed image:**
+```
+<plain URL>
+```
+
+**<Stack> SDK snippet:**
+```
+<minimal code block that generates the delivery URL through the SDK>
+```
+
+**Preview:** Open `docs/cloudinary-getting-started-preview.html` in a browser. You'll see the original image next to the optimized version — the transformed image is smaller and faster while keeping quality. This is Cloudinary's delivery optimization in action. (Omit for API-only lanes.)
+
+**Environment docs:** Open `docs/cloudinary-environment.json` for all verification details — no secrets stored.
+
+---
+
 Let me know when you're done reviewing your configuration and I'll suggest some next steps.
 
-Answer with: Done
-```
+**Suggested reply:** Done
 
-Shortcut rule: if Stage 5 did not run this round, omit Stage 5 artifact lines such as `docs/cloudinary-environment.json`, measurements, or preview HTML. Still finish with the Done gate.
+---
 
-At the end of Stage 5, use STAGE_COMPLETION_FORMAT (all five stages should be checked off).
+**Shortcut rule:** If Stage 5 did not run this round, show only the Done gate above. Still close with STAGE_COMPLETION_FORMAT (all five stages checked off).
 
 ## What's next after setup
 
-After the user says `Done`, give them up to four specific next steps. Keep them short, practical, and use-case focused. Include copy/paste prompts where helpful.
+After the user says `Done`, give them up to four specific next steps in this order:
+1. **Install the Cloudinary VS Code extension** (if using VS Code)
+2. **Run your app** — see the integration end-to-end from your browser
+3. **Activate the MCP servers** — enable AI assistance in your IDE
+4. **Choose a next step** — pick from the relevant use-case prompts
 
-Always start with a "run your app" step — tell the user the command to start their detected framework's dev server. This is step 0: validation proves Cloudinary works; running the app lets the user see the integration end-to-end from their browser.
+Use the delivery lane tracked during setup to choose which prompts to show. Replace `[framework]` in copy/paste prompts with the detected framework name, such as Flask, Django, Rails, or Next.js.
 
-Use the delivery lane tracked during setup to pick the remaining steps. Replace `[framework]` in copy/paste prompts with the detected framework name, such as Flask, Django, Rails, or Next.js.
+**What's safe to keep or delete:** The `docs/cloudinary-getting-started-preview.html` file was for validation — you can delete it anytime. Keep `docs/cloudinary-environment.json` for reference and `.env.example` for new developers. Never delete or commit `.env` (it contains real secrets).
 
-### Front-end only and full-stack lanes
+### Install the Cloudinary VS Code extension (VS Code only)
 
-**Run your app**
-Install dependencies and start the dev server so you can see the integration working end-to-end in your browser.
+If you're using VS Code, the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
+
+1. Open VS Code extensions (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows/Linux)
+2. Search for "Cloudinary" and click Install
+
+### Run your app
+
+Install dependencies and start your dev server:
 
 When the user's detected framework is one of the below, output these exact commands — word-for-word, do not paraphrase, abbreviate, or substitute alternative commands. Present them in code blocks ready to copy-paste:
 
@@ -732,48 +751,52 @@ go run .
 
 If the detected framework is not listed above, determine and show the equivalent install-then-start sequence for that stack, but always include all prerequisite setup steps (venv, package manager install, etc.) before the server start command.
 
-**Optimize and deliver your product or marketing assets through Cloudinary**
+### Activate the MCP servers
 
-Copy/paste the prompt: `Generate optimized delivery URLs from assets in my Cloudinary product environment and display them in my [framework] app`
+Restart your IDE so the MCP servers load your credentials. You may see permission prompts—confirm them. If you need help, ask the AI assistant.
+
+---
+
+### Build your app with Cloudinary
+
+**Optimize and deliver your product or marketing assets**
+
+`Generate optimized delivery URLs from assets in my Cloudinary product environment and display them in my [framework] app`
 
 **Transform and deliver video content**
 
-Copy/paste the prompt: `Transform, optimize, and deliver video assets retrieved from my product environment in my [framework] app using Cloudinary`
+`Transform, optimize, and deliver video assets retrieved from my product environment in my [framework] app using Cloudinary`
 
 **Let users upload photos or files to your app**
 
-Copy/paste the prompt: `Set up users to upload images in my [framework] app using the getting_started upload preset and the Cloudinary Upload widget`
+`Set up users to upload images in my [framework] app using the getting_started upload preset and the Cloudinary Upload widget`
 
-### Back-end API-only lanes
+### Build your API with Cloudinary (back-end only)
 
-**Run your app**
-Install dependencies and start the server so you can confirm it responds before moving on to building endpoints.
+**Generate transformed and optimized delivery URLs**
 
-Use the exact same commands as shown in the front-end/full-stack lane above — output them word-for-word with no paraphrasing or alternatives.
-
-**Generate transformed and optimized delivery URLs from your assets**
-
-Copy/paste the prompt: `Generate transformed and optimized delivery URLs from my Cloudinary assets and return them in my [framework] API responses`
+`Generate transformed and optimized delivery URLs from my Cloudinary assets and return them in my [framework] API responses`
 
 **Generate signed delivery URLs for protected assets**
 
-Copy/paste the prompt: `Add a server-side endpoint in my [framework] API that generates signed Cloudinary delivery URLs without exposing secrets to clients`
+`Add a server-side endpoint in my [framework] API that generates signed Cloudinary delivery URLs without exposing secrets to clients`
 
 **Upload files from your server to Cloudinary**
 
-Copy/paste the prompt: `Upload files from my server to Cloudinary in my [framework] API`
+`Upload files from my server to Cloudinary in my [framework] API`
 
 **Build an admin workflow for finding and managing assets**
 
-Copy/paste the prompt: `Tag and search uploaded assets in Cloudinary using my [framework]`
+`Tag and search uploaded assets in Cloudinary using my [framework]`
 
 ### Rules for next steps
 
 * **Output the startup commands exactly as written in the framework sections above.** Do not abbreviate, paraphrase, improvise, or substitute alternative commands. If Python/Flask is detected, output the full `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt` followed by `python3 app.py` — never skip steps or show `pip install` alone.
-* Always start with the "run your app" step and show the correct start command for the detected framework.
-* Use the detected delivery lane to choose the remaining steps. Pick the most relevant three from the lane's list — not all of them.
-* Full-stack uses the front-end/full-stack set.
-* Back-end API-only uses the back-end API-only set.
+* **What to include in What's Next:** Show sections in this order: (1) Install Cloudinary VS Code extension, (2) Run your app, (3) Activate the MCP servers, (4) Build your app/API with Cloudinary (pick relevant prompts). Then finish with the "What's safe to keep or delete" section at the end.
+* Always show the VS Code extension section — users in other editors will simply skip it.
+* Use the detected delivery lane to choose which prompts to show. Show the "Build your app with Cloudinary" section for front-end/full-stack, or "Build your API with Cloudinary" for back-end API-only.
+* For front-end/full-stack apps, show the "Optimize and deliver", "Transform and deliver video", and "Upload photos" prompts.
+* For back-end API-only apps, show the "Generate transformed URLs", "Generate signed URLs", "Upload files", and "Build admin workflow" prompts.
 * Don't mix lane-specific suggestions.
 * Don't suggest optimization as a next step — Stage 5 already demonstrated it with real measurements. Only mention it if the user asks.
 * Don't suggest UGC uploads as the primary next step. Lead with delivering assets already in the product environment; offer UGC as an optional step for apps that need it.
@@ -785,6 +808,7 @@ Copy/paste the prompt: `Tag and search uploaded assets in Cloudinary using my [f
 * When users ask follow-up questions about transformations, optimization, or delivery URLs, direct them to use the `/cloudinary-transformations` skill to build and debug URLs.
 * For questions about Cloudinary APIs, SDKs, webhooks, and implementation details not covered by specialized skills, direct them to use the `/cloudinary-docs` skill.
 * In code examples for rendering or delivering images in the app, always verify that the asset exists in the product environment before outputting the delivery URL. Don't hardcode or assume assets exist — guide users to check their Cloudinary product environment first.
+* If the user needs help activating the MCP servers, suggest they use the AI assistant: "If you run into issues with MCP activation, ask me to help — I can walk you through the specific steps for your IDE."
 
 ## Appendix A: IDE MCP Config Templates
 
