@@ -70,7 +70,7 @@ When the skill runs, it creates or updates these files in your **project root**:
 - **SDK configuration** — updated in your app's entry point (e.g., `app.py`, `server.js`, `app/config.rb`) with Cloudinary imports and config
 - **Dependency manifest** — `requirements.txt` / `package.json` / `Gemfile` / `go.mod` / etc. — updated with Cloudinary SDK
 - `.env.example` — placeholder credentials (safe to commit)
-- `.env` — real credentials (added to `.gitignore`, never commit)
+- `.env` — created if it doesn't exist, or updated only with your permission if it already exists; contains real credentials (added to `.gitignore`, never commit)
 - `docs/cloudinary-environment.json` — validation results and setup details (no secrets)
 - `docs/cloudinary-getting-started-preview.html` — side-by-side image preview (front-end and full-stack projects only)
 
