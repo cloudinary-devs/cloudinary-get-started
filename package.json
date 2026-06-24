@@ -1,5 +1,5 @@
 {
-  "name": "@cloudinary-devs/cloudinary-get-started",
+  "name": "@cloudinary-devs/cloudinary-get-started-test",
   "version": "1.0.0",
   "description": "AI-assisted onboarding guide for integrating Cloudinary into your project. Installs MCP servers, configures your SDK, and validates the integration end-to-end.",
   "type": "module",
@@ -9,7 +9,8 @@
   "files": [
     "bin",
     "skill",
-    "README.md"
+    "README.md",
+    "package.json"
   ],
   "repository": {
     "type": "git",
