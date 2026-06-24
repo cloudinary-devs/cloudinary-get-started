@@ -1,0 +1,32 @@
+{
+  "name": "@cloudinary-devs/cloudinary-get-started",
+  "version": "1.0.0",
+  "description": "AI-assisted onboarding guide for integrating Cloudinary into your project. Installs MCP servers, configures your SDK, and validates the integration end-to-end.",
+  "type": "module",
+  "bin": {
+    "cloudinary-get-started": "./bin/index.js"
+  },
+  "files": [
+    "bin",
+    "skill",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudinary-devs/cloudinary-get-started"
+  },
+  "keywords": [
+    "cloudinary",
+    "skill",
+    "ai",
+    "claude",
+    "onboarding",
+    "sdk",
+    "mcp"
+  ],
+  "author": "Cloudinary",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
