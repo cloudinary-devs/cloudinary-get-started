@@ -1,5 +1,5 @@
 ---
-name: cld-get-started
+name: cloudinary-get-started
 description: >-
   Guide Cloudinary onboarding for new or existing projects through a gated,
   stack-detected setup flow. Use when the user asks to get started with

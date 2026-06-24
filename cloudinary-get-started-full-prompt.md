@@ -295,11 +295,7 @@ Run only after Stage 1 is resolved and after checking both repo evidence and the
 
 - **Empty repo:** if the user already named a framework/stack in the original request, treat that as the explicit stack choice and do not ask again. Ask which framework/stack they want only when no framework was stated and none can be detected. Do not assume React or Python.
 
-  If the chosen framework can be used either as a full-stack app or an API/service only, and the intended delivery lane cannot be reasonably inferred, ask one additional question:
-
-  `Will this project serve user-facing pages, or is it an API/service only?`
-
-  Use the answer to classify the delivery lane.
+  If the chosen framework can be used either as a full-stack app or an API/service only, and the intended delivery lane cannot be reasonably inferred, ask one additional question. Do NOT write the question as a separate sentence before the footer — the question appears ONLY in BLOCKING_FOOTER. Use the answer to classify the delivery lane.
 
 - **Code-no-cloudinary:** name the inferred stack, affirm real app structure, say Cloudinary is not set up in this codebase yet, and ask whether to proceed. End with BLOCKING_FOOTER. Use answer cues like `proceed · wrong stack guess · quit`.
 - **Code-with-cloudinary:** do not ask the user to choose a feature area. Confirm they want to continue with Cloudinary setup/configuration and validation for this repo, then proceed toward Stage 3/4/5 in order. End with BLOCKING_FOOTER whenever waiting.
@@ -307,7 +303,7 @@ Run only after Stage 1 is resolved and after checking both repo evidence and the
 
 Do not include credential or MCP handoff in Stage 2.
 
-At the end of Stage 2, use STAGE_COMPLETION_FORMAT with BLOCKING_FOOTER. Ask the user to confirm readiness to proceed to Stage 3. Example gate question: "Ready to set up the SDK and the environment file?"
+At the end of Stage 2, use STAGE_COMPLETION_FORMAT with BLOCKING_FOOTER. The gate question appears ONLY in the BLOCKING_FOOTER, not before it. Example gate question: "Ready to set up the SDK and the environment file?"
 
 **CRITICAL: After sending STAGE_COMPLETION_FORMAT and BLOCKING_FOOTER, STOP. Do not write any Stage 3 code, install packages, create files, or take any Stage 3 action until the user explicitly replies confirming readiness.**
 
@@ -382,7 +378,7 @@ During Stage 3, handle `.env` as follows:
 
 **If `.env` already exists:**
 1. Check that `.env` exists (do not read its contents)
-2. Use BLOCKING_FOOTER to ask the user for their preference:
+2. Use BLOCKING_FOOTER to ask the user for their preference. Do NOT ask this question as a separate sentence before the footer — the question appears ONLY in BLOCKING_FOOTER below:
 
 ---
 **Reply to continue setup:**
@@ -479,7 +475,7 @@ Do not summarize multiple substeps into a single response. Do not mention creden
 
 Do you have a Cloudinary account?
 
-If not, sign up for free here: [Create a free Cloudinary account](https://cloudinary.com/users/register/free?utm_source=cursor&utm_medium=skill&utm_campaign=cloudinary-getting-started)
+If not, sign up for free here: [Create a free Cloudinary account](https://cloudinary.com/users/register_free?utm_campaign=5511-&utm_medium=employee_referral&utm_source=cloudinary&utm_content=ai-getting-started-prompt)
 
 **Suggested reply:** Yes, I have an account · Yes, I just finished sign-up
 
@@ -683,9 +679,9 @@ Use the delivery lane tracked during setup to choose which prompts to show. Repl
 
 **What's safe to keep or delete:** The `docs/cloudinary-getting-started-preview.html` file was for validation — you can delete it anytime. Keep `docs/cloudinary-environment.json` for reference and `.env.example` for new developers. Never delete or commit `.env` (it contains real secrets).
 
-### Install the Cloudinary VS Code extension (VS Code only)
+### Install the Cloudinary VS Code extension
 
-If you're using VS Code, the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
+If you're using VS Code or a VS Code-based IDE (like Cursor), the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
 
 1. Open VS Code extensions (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows/Linux)
 2. Search for "Cloudinary" and click Install

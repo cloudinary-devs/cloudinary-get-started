@@ -69,7 +69,7 @@ During Stage 3, handle `.env` as follows:
 
 **If `.env` already exists:**
 1. Check that `.env` exists (do not read its contents)
-2. Use BLOCKING_FOOTER to ask the user for their preference:
+2. Use BLOCKING_FOOTER to ask the user for their preference. Do NOT ask this question as a separate sentence before the footer — the question appears ONLY in BLOCKING_FOOTER below:
 
 ---
 **Reply to continue setup:**

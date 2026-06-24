@@ -23,7 +23,7 @@ Do not summarize multiple substeps into a single response. Do not mention creden
 
 Do you have a Cloudinary account?
 
-If not, sign up for free here: [Create a free Cloudinary account](https://cloudinary.com/users/register/free?utm_source=cursor&utm_medium=skill&utm_campaign=cloudinary-getting-started)
+If not, sign up for free here: [Create a free Cloudinary account](https://cloudinary.com/users/register_free?utm_campaign=5511-&utm_medium=employee_referral&utm_source=cloudinary&utm_content=ai-getting-started-prompt)
 
 **Suggested reply:** Yes, I have an account · Yes, I just finished sign-up
 

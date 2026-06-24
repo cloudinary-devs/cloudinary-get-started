@@ -1,7 +1,7 @@
 # What's next after setup
 
 After the user says `Done`, give them up to four specific next steps in this order:
-1. **Install the Cloudinary VS Code extension** (if using VS Code)
+1. **Install the Cloudinary VS Code extension** (if using VS Code or a VS Code-based IDE)
 2. **Run your app** — see the integration end-to-end from your browser
 3. **Activate the MCP servers** — enable AI assistance in your IDE
 4. **Choose a next step** — pick from the relevant use-case prompts
@@ -10,9 +10,9 @@ Use the delivery lane tracked during setup to choose which prompts to show. Repl
 
 **What's safe to keep or delete:** The `docs/cloudinary-getting-started-preview.html` file was for validation — you can delete it anytime. Keep `docs/cloudinary-environment.json` for reference and `.env.example` for new developers. Never delete or commit `.env` (it contains real secrets).
 
-### Install the Cloudinary VS Code extension (VS Code only)
+### Install the Cloudinary VS Code extension (VS Code and VS Code-based IDEs)
 
-If you're using VS Code, the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
+If you're using VS Code or a VS Code-based IDE (like Cursor), the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
 
 1. Open VS Code extensions (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows/Linux)
 2. Search for "Cloudinary" and click Install
