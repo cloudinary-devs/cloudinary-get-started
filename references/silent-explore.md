@@ -23,11 +23,11 @@ Classification rules:
 
 Delivery lane rules:
 
-| Lane | When to use | Admin API config in Stage 5 | Standalone preview HTML |
-| --- | --- | --- | --- |
-| `front-end only` | Browser-only app | No; omit `admin_api` or set skip reason | Yes |
-| `back-end API-only` | Server/API without user-facing HTML preview | Yes | No |
-| `full-stack` | App has server + UI/templates | Yes | Yes |
+| Lane | When to use | Preview HTML in Stage 5 |
+| --- | --- | --- |
+| `front-end only` | Browser-only app | Yes |
+| `back-end API-only` | Server/API without user-facing HTML preview | No |
+| `full-stack` | App has server + UI/templates | Yes |
 
 All lanes need cloud name, API key, and API secret in local `.env` for MCP. Front-end bundles may expose only cloud name and upload preset client-side.
 
