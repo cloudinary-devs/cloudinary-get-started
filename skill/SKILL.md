@@ -44,8 +44,10 @@ Follow this hard order whenever work remains:
 3. Stage 2: repo/framework check (ends with confirmation gate)
 4. Stage 3: detected-stack SDK + env file setup
 5. Stage 4: credentials (starts with D1 account check)
-6. Stage 5: preset + validation artifacts + Done gate
+6. Stage 5: preset + validation artifacts + **Done gate** (REQUIRED — do not skip)
 7. After the user replies `Done`: What's next (includes MCP activation)
+
+**CRITICAL:** Stage 5 MUST end with the Done gate before showing What's next. The Done gate appears in `references/stage-5-validation.md` (lines 113-116). Do not show What's next until the user explicitly replies "Done".
 
 At the end of every stage, use the stage completion format defined below.
 

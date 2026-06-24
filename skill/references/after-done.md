@@ -1,5 +1,7 @@
 # What's next after setup
 
+**CRITICAL:** This reference contains the authoritative content for the final step. Show this section ONLY AFTER the user explicitly replies "Done" to the Stage 5 Done gate (from `stage-5-validation.md`, lines 113-116).
+
 After the user says `Done`, give them up to four specific next steps in this order:
 1. **Install the Cloudinary VS Code extension** (if using VS Code or a VS Code-based IDE)
 2. **Run your app** — see the integration end-to-end from your browser

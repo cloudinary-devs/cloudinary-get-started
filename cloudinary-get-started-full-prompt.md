@@ -669,7 +669,9 @@ Let me know when you're done reviewing your configuration and I'll suggest some 
 
 ## What's next after setup
 
-After the user says `Done`, give them up to four specific next steps in this order:
+**Important:** Use `references/after-done.md` for detailed instructions on this section. The details below are a summary only.
+
+After the user says `Done` (the Done gate appears at the end of Stage 5), give them up to four specific next steps in this order:
 1. **Install the Cloudinary VS Code extension** (if using VS Code)
 2. **Run your app** — see the integration end-to-end from your browser
 3. **Activate the MCP servers** — enable AI assistance in your IDE
