@@ -12,7 +12,12 @@ npx skills add cloudinary-devs/cloudinary-get-started
 
 This installs the skill to `.agents/skills/cloudinary-get-started` by default.
 
-To install to a different IDE's skill folder, select the "Copy to all agents" option.
+To install to a different IDE's skill folder:
+
+```
+npx skills add cloudinary-devs/cloudinary-get-started --target cursor
+npx skills add cloudinary-devs/cloudinary-get-started --target agents
+```
 
 ## Use
 
