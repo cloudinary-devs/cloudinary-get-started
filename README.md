@@ -15,7 +15,7 @@ This installs the skill to `.claude/skills/cloudinary-get-started` by default.
 To install to a different IDE's skill folder:
 
 ```
-npx skills @cloudinary-devs/cloudinary-get-started --target cursor
+npx skills add cloudinary-devs/cloudinary-get-started --target cursor
 npx skills add cloudinary-devs/cloudinary-get-started --target agents
 ```
 
