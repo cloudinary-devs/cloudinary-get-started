@@ -10,7 +10,7 @@ Install the CLI globally or in your project:
 npx skills add cloudinary-devs/cloudinary-get-started
 ```
 
-This installs the skill to `.claude/skills/cloudinary-get-started` by default.
+This installs the skill to `.agents/skills/cloudinary-get-started` by default.
 
 To install to a different IDE's skill folder:
 
