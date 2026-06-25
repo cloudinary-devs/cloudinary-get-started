@@ -16,7 +16,7 @@ To install to a different IDE's skill folder:
 
 ```
 npx skills @cloudinary-devs/cloudinary-get-started --target cursor
-npx skills @cloudinary-devs/cloudinary-get-started --target agents
+npx skills add cloudinary-devs/cloudinary-get-started --target agents
 ```
 
 ## Use
