@@ -4,7 +4,7 @@ An installer CLI for an AI-assisted onboarding skill that guides you through int
 
 ## Install
 
-Install the CLI globally or in your project:
+Install the skill globally or in your project:
 
 ```
 npx skills add cloudinary-devs/cloudinary-get-started --copy
