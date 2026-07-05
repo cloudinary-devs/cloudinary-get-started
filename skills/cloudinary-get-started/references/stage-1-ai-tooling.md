@@ -13,7 +13,7 @@ Cloudinary onboarding requires these two stdio MCP servers:
 - `cloudinary-asset-mgmt` — package: `@cloudinary/asset-management`, command: `npx`, args: `-y --registry https://registry.npmjs.org --package @cloudinary/asset-management -- mcp start --transport stdio`
 - `cloudinary-env-config` — package: `@cloudinary/environment-config`, command: `npx`, args: `-y --registry https://registry.npmjs.org --package @cloudinary/environment-config -- mcp start --transport stdio`
 
-Configure those servers using the current IDE or agent environment's MCP format. Do not paste real secrets into MCP config. See Appendix A for IDE-specific config templates.
+Configure those servers using the current IDE or agent environment's MCP format. Do not paste real secrets into MCP config. See `references/appendix-a-ide-mcp-templates.md` (Appendix A) for IDE-specific config templates.
 
 Credential handling:
 - If the environment supports an env file reference, point MCP to the project `.env`.
@@ -32,8 +32,6 @@ Which IDE or agent are you using?
 **Suggested reply:** <IDE name>
 
 ---
-
-Then apply the closest matching pattern from Appendix A. If truly unknown, provide the raw stdio server definitions and tell the user to add them in their IDE's MCP settings with `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` injected as environment variables.
 
 ### If AI is incomplete
 
@@ -56,7 +54,7 @@ Placeholder rules:
 - After approval, complete the full setup needed for the current IDE or agent environment, including required MCP config, skills installation, skill relocation from `.agents/skills/`, cleanup, `.gitignore` updates, and verification.
 
 After approval only:
-- Add or repair the required MCP server config using the current IDE or agent environment's standard project-level MCP mechanism. Include `.env` reference as described in Appendix A.
+- Add or repair the required MCP server config using the current IDE or agent environment's standard project-level MCP mechanism. Include `.env` reference as described in `references/appendix-a-ide-mcp-templates.md` (Appendix A).
 - Preserve unrelated MCP servers when editing config.
 - Run `npx skills add cloudinary-devs/skills` when required skills are missing.
 - For Claude Code: Skills are installed to `.claude/skills/` (the canonical location for Claude Code). Verify the directory exists and `SKILL.md` files exist under each required Cloudinary skill ID. **Do not report success until you have verified the files are present.**

@@ -245,8 +245,6 @@ Which IDE or agent are you using?
 
 ---
 
-Then apply the closest matching pattern from Appendix A. If truly unknown, provide the raw stdio server definitions and tell the user to add them in their IDE's MCP settings with `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` injected as environment variables.
-
 ### If AI is incomplete
 
 Hard stop. Do not edit MCP config, project `.mcp.json`, skill folders, `.gitignore`, or `.agents/`; do not run `npx skills add`; do not install marketplace plugins; do not continue to Stage 2/3/4/5.
@@ -851,3 +849,5 @@ Load only the template for the detected IDE.
 ```
 
 **Windsurf** — add servers to `~/.codeium/windsurf/mcp_config.json` (global) or a project-level `mcp_config.json`. Windsurf does not support `envFile`; use the same shell-wrap pattern with `mcpServers` as the top-level key (same format as Claude Code, including `--registry https://registry.npmjs.org`).
+
+Other IDEs or agents — if the detected IDE isn't listed above, use that IDE or agent environment's standard project-level MCP configuration pattern. If the IDE supports .env references, point to the project .env; otherwise use shell-wrap or environment variable references.
