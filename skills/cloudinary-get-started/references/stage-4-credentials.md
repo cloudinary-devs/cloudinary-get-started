@@ -70,7 +70,7 @@ Done filling in your credentials?
 
 ---
 
-Confirm that `.env` exists (using `ls -f .env` to verify existence only) and the user confirms all three `CLOUDINARY_*` keys are filled. Never read, view, display, or claim to have verified `.env` contents. Once confirmed by the user, tell them: "Great! Next we'll move to setup verification. The MCP servers will be activated afterward in the next steps."
+Confirm that `.env` exists (using `ls -f .env` to verify existence only) and the user confirms all three `CLOUDINARY_*` keys are filled. Never read, view, display, or claim to have verified `.env` contents. Once confirmed by the user, tell them: "Great! You've confirmed that you have a Cloudinary account and that your `.env` file contains your real Cloudinary credentials, not placeholder values. For your security, I won't inspect or verify those credentials directly. Next we'll move to setup verification. The MCP servers will be activated afterward in the next steps."
 
 **Critical — enforce strictly:**
 - Never say "I can see...", "I verified...", "Your credentials show...", or "I checked that..." — these all imply reading the file
