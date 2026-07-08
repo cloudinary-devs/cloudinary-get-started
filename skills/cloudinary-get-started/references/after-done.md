@@ -1,6 +1,6 @@
 # What's next after setup
 
-**CRITICAL:** This reference contains the authoritative content for the final step. Show this section ONLY AFTER the user explicitly replies "Done" to the Stage 5 Done gate (from `stage-5-validation.md`, lines 113-116).
+**CRITICAL:** This reference contains the authoritative content for the final step. Show this section ONLY AFTER the user explicitly replies "Done" to the Stage 5 Done gate (the closing block of the "Verification response format" section in `stage-5-validation.md`).
 
 After the user says `Done`, give them up to four specific next steps in this order:
 1. **Install the Cloudinary VS Code extension** (if using VS Code or a VS Code-based IDE)
@@ -117,6 +117,7 @@ Restart your IDE so the MCP servers load your credentials. You may see permissio
 * Don't suggest API key changes unless the user reports a specific permission problem.
 * Keep the suggestions focused on user scenarios, not Cloudinary feature names.
 * For framework-specific details, let the user copy/paste the prompt and let the relevant skill answer.
+* When the user runs one of the Build-with-Cloudinary prompts, read the matching installed `cloudinary-*` skill (e.g., `cloudinary-react` for React projects, `cloudinary-transformations` for URL building) before writing any code — never compose SDK code from memory.
 * When users ask follow-up questions about transformations, optimization, or delivery URLs, direct them to use the `/cloudinary-transformations` skill to build and debug URLs.
 * For questions about Cloudinary APIs, SDKs, webhooks, and implementation details not covered by specialized skills, direct them to use the `/cloudinary-docs` skill.
 * In code examples for rendering or delivering images in the app, always verify that the asset exists in the product environment before outputting the delivery URL. Don't hardcode or assume assets exist — guide users to check their Cloudinary product environment first.

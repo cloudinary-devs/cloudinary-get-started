@@ -13,6 +13,8 @@ This stage sets up placeholder environment files. Real credentials are added in 
 - Update dependency files (requirements.txt, package.json, etc.)
 - Update `.gitignore`
 
+**App-code boundary:** Stage 3 app changes end at configuration. Do not add components, routes, views, templates, or any code that renders or displays Cloudinary assets — in-app media rendering happens only after `Done`, when the user picks a Next Steps prompt.
+
 **`.env` file handling:** Conditional based on user preference:
 - If no `.env` file exists in the repo, create both `.env` and `.env.example` with Cloudinary placeholders. This avoids an extra copy step later.
 - If a `.env` file already exists, ask the user if it's OK for us to add the Cloudinary placeholder credentials to their `.env` file (without touching other content), or if they prefer to do it manually themselves. Store their preference to inform Stage 4 instructions.

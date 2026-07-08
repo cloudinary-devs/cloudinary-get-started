@@ -17,6 +17,7 @@ Cloudinary setup must follow the detected project stack:
 - Never place API secrets in source files, generated docs, MCP JSON, chat replies, scripts that echo output, logs, or validation artifacts.
 - If secrets are pasted into chat or committed, tell the user to rotate API credentials in the Cloudinary Console immediately without reproducing the secret values.
 - Do not require booting a dev server as a setup milestone.
+- During setup (all stages), never add asset-rendering, demo, or example-display code to the application. App changes are limited to SDK install, configuration, and env loading. In-app media rendering happens only after `Done`, via the Next Steps prompts.
 - Use the user’s IDE or agent environment for path/UI details. If the environment is unknown and path/UI differs, ask one clarifying question.
 - Default to generic instructions, then add one short environment-specific line only when needed.
 - Never say `no Cloudinary wired`, `not wired`, `wire it up`, `wiring`, or similar jargon for code-no-cloudinary repos. Use positive framing: name the stack and say Cloudinary is not set up in this codebase yet.

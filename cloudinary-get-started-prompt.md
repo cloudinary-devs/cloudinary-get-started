@@ -158,6 +158,7 @@ Cloudinary setup must follow the detected project stack:
 - Never place API secrets in source files, generated docs, MCP JSON, chat replies, scripts that echo output, logs, or validation artifacts.
 - If secrets are pasted into chat or committed, tell the user to rotate API credentials in the Cloudinary Console immediately without reproducing the secret values.
 - Do not require booting a dev server as a setup milestone.
+- During setup (all stages), never add asset-rendering, demo, or example-display code to the application. App changes are limited to SDK install, configuration, and env loading. In-app media rendering happens only after `Done`, via the Next Steps prompts.
 - Use the user's IDE or agent environment for path/UI details. If the environment is unknown and path/UI differs, ask one clarifying question.
 - Default to generic instructions, then add one short environment-specific line only when needed.
 - Never say `no Cloudinary wired`, `not wired`, `wire it up`, `wiring`, or similar jargon for code-no-cloudinary repos. Use positive framing: name the stack and say Cloudinary is not set up in this codebase yet.
@@ -319,6 +320,8 @@ This stage sets up placeholder environment files. Real credentials are added in 
 - Add dotenv loading if needed
 - Update dependency files (requirements.txt, package.json, etc.)
 - Update `.gitignore`
+
+**App-code boundary:** Stage 3 app changes end at configuration. Do not add components, routes, views, templates, or any code that renders or displays Cloudinary assets — in-app media rendering happens only after `Done`, when the user picks a Next Steps prompt.
 
 **`.env` file handling:** Conditional based on user preference:
 - If no `.env` file exists in the repo, create both `.env` and `.env.example` with Cloudinary placeholders. This avoids an extra copy step later.
@@ -622,9 +625,10 @@ Do not skip the `samples/coffee` fetch and go straight to MCP search. This is a 
 - Measure both preview URLs with a local script in a suitable project language. Use this Chrome-like `Accept` header: `image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8`. Record real bytes, content type, and dimensions when available. Never fabricate measurements. **Important:** The original image format (e.g., JPEG) will differ from the transformed format (e.g., WebP) because the transformation chain includes `f_auto`, which automatically selects the optimal format. Record both formats separately in measurements.
 - For front-end and full-stack lanes, create or update `docs/cloudinary-getting-started-preview.html`. It must contain the same two URL literals as chat and `docs/cloudinary-environment.json` — the exact original and transformed URLs with the real cloud name, never a placeholder such as `<cloud>`, `your_cloud_name`, or `YOUR_CLOUD_NAME` — fetch both URLs with the same `Accept` header, use `createImageBitmap` for browser stats when possible, show savings, and include a `#stage-5-integration-snippet` section. Back-end API-only lanes skip this file.
 - **Mandatory preview verification:** after writing the preview HTML, extract both URLs exactly as they appear in the file (e.g., grep them out) and fetch each one, confirming a 200 response. If either fetch fails or a placeholder is found in the file, fix the file and re-verify before declaring Stage 5 complete. Never report Stage 5 complete with unverified or placeholder URLs in the preview HTML.
-- Never add the standalone preview to framework route code. It belongs only in `docs/`.
+- Never add the standalone preview to framework route code, and never add any asset-rendering or demo code to the application during Stage 5. All Stage 5 artifacts live in `docs/` — the app itself is not modified in this stage.
 - **Comments in generated files:** Every file created or significantly changed in Stage 5 must include short, useful inline comments explaining what each section does and why. Apply this to `docs/cloudinary-getting-started-preview.html` (explain each section: image display, measurement fetch, SDK snippet, stats), `docs/cloudinary-environment.json` (top-level comment block describing what the file contains and where to find docs), and any validation scripts. Focus on the non-obvious — why a particular URL pattern is used, what the Accept header achieves. Do not comment every line.
 - For server lanes, the chat snippet and `#stage-5-integration-snippet` must generate the delivery URL through the detected stack's Cloudinary SDK when available. Do not use a pasted static URL as the only server integration.
+- **Snippet sourcing:** compose every SDK snippet (chat and `#stage-5-integration-snippet`) from the installed Cloudinary skill matching the stack (e.g., `.claude/skills/cloudinary-react/SKILL.md` for React), or from the official Cloudinary docs for stacks without one — never from memory. Get the API composition right: in `@cloudinary/url-gen`, qualifiers such as auto gravity belong inside the resize action (`fill().gravity(autoGravity())` → `c_fill,g_auto,...`), never chained as standalone actions (which produces broken URL segments like `/auto/auto/`).
 - For front-end-only lanes, follow the framework-appropriate Cloudinary docs. A plain `<img src>` is acceptable when it matches the app. React-specific helpers are only for React-classified projects.
 - Optional validation scripts may wrap measurements and Admin checks. Name them according to the project ecosystem; do not assume npm unless the repo is npm-based.
 - In chat for front-end/full-stack lanes, echo the canonical transformed URL.
@@ -791,6 +795,7 @@ Restart your IDE so the MCP servers load your credentials. You may see permissio
 * Don't suggest API key changes unless the user reports a specific permission problem.
 * Keep the suggestions focused on user scenarios, not Cloudinary feature names.
 * For framework-specific details, let the user copy/paste the prompt and let the relevant skill answer.
+* When the user runs one of the Build-with-Cloudinary prompts, read the matching installed `cloudinary-*` skill (e.g., `cloudinary-react` for React projects, `cloudinary-transformations` for URL building) before writing any code — never compose SDK code from memory.
 * When users ask follow-up questions about transformations, optimization, or delivery URLs, direct them to use the `/cloudinary-transformations` skill to build and debug URLs.
 * For questions about Cloudinary APIs, SDKs, webhooks, and implementation details not covered by specialized skills, direct them to use the `/cloudinary-docs` skill.
 * In code examples for rendering or delivering images in the app, always verify that the asset exists in the product environment before outputting the delivery URL. Don't hardcode or assume assets exist — guide users to check their Cloudinary product environment first.
