@@ -146,14 +146,14 @@ Never read `.env` contents to verify this gate.
 Cloudinary setup must follow the detected project stack:
 - Use the official Cloudinary SDK or Cloudinary documentation appropriate to the repo's language/framework.
 - Treat Python and React as conditional cases, not defaults.
-- Install `cloudinary-react`, `@cloudinary/react`, or React scaffolding only when React is detected in the repo or the user explicitly chooses React.
+- Install React packages or scaffolding only when React is detected in the repo or the user explicitly chooses React. For React, install `@cloudinary/react` and `@cloudinary/url-gen` — never the deprecated legacy `cloudinary-react` npm package. (Note: elsewhere in these instructions, `cloudinary-react` refers only to the skill from the skills pack, never to an npm package.)
 - For other front-end stacks, use the framework-appropriate Cloudinary docs or SDK. Do not add React packages.
 - For server lanes, Stage 5 snippets must be SDK-first for the detected server SDK whenever that SDK supports URL generation. Use an equivalent signed request only for Admin API validation when the SDK path is unavailable.
 
 ### Non-negotiable global rules
 
 - Never ask for, print, echo, log, quote, or display secrets.
-- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check ONLY that the workspace-root `.env` file exists (using `ls -f .env` or equivalent one-liner to verify existence only). Never read the file, never view its contents, never display any output from reading it. Rely entirely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading, echoing, or displaying their values.
+- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check ONLY that the workspace-root `.env` file exists (using `ls -f .env` or equivalent one-liner to verify existence only). Never read the file, never view its contents, never display any output from reading it. Rely entirely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading, echoing, or displaying their values. **Single exception — cloud name only:** `CLOUDINARY_CLOUD_NAME` is not a secret; it appears in every public delivery URL. After shell-wrap loading, you may run `echo "$CLOUDINARY_CLOUD_NAME"` (that variable only — never the API key or secret) to obtain the literal cloud name needed for delivery URLs and validation artifacts.
 - Stage 3 may write placeholder `CLOUDINARY_*` values to `.env.example`. Client-side placeholders are allowed only when required by the detected framework, such as `VITE_*` for React/Vite.
 - Never place API secrets in source files, generated docs, MCP JSON, chat replies, scripts that echo output, logs, or validation artifacts.
 - If secrets are pasted into chat or committed, tell the user to rotate API credentials in the Cloudinary Console immediately without reproducing the secret values.
@@ -262,7 +262,7 @@ You're missing <missing MCP servers/skills> that make the coding assistant bette
 
 Placeholder rules:
 - Name the actual missing items, for example `Cloudinary MCP servers` or `cloudinary-docs and cloudinary-transformations via npx skills add`.
-- Include `cloudinary-react` only when React-classified.
+- Include the `cloudinary-react` skill only when React-classified. (This is the skill from the skills pack — not the deprecated `cloudinary-react` npm package, which must never be installed.)
 - After approval, complete the full setup needed for the current IDE or agent environment, including required MCP config, skills installation, skill relocation from `.agents/skills/`, cleanup, `.gitignore` updates, and verification.
 
 After approval only:
@@ -332,6 +332,12 @@ Use the detected stack as the source of truth:
 - Add client-exposed placeholders only when the detected framework requires them. Example: React/Vite uses `VITE_*` per the official Cloudinary React/Vite guidance.
 - Do not request real credentials in Stage 3.
 - Use the official Cloudinary SDK/docs and the repo's existing package manager/build conventions.
+
+**Source of correct install and import instructions — do not work from memory:**
+- Before installing packages or writing any SDK code, read the installed Cloudinary skill that matches the detected stack (for Claude Code: `.claude/skills/cloudinary-react/SKILL.md` for React-classified projects) and follow its install and import instructions exactly, including package names and versions.
+- For stacks without a matching installed skill, fetch the official Cloudinary documentation page for the detected framework/SDK (quickstart or SDK reference) and follow its install and import instructions. Never guess package names, versions, or import paths.
+- Include an import for every Cloudinary feature the generated code uses. With `@cloudinary/url-gen`, each action/qualifier is a separate tree-shakable import (e.g., `@cloudinary/url-gen/actions/resize`) — a missing import is a broken build, not a style issue.
+- After writing Stage 3 code, verify it builds or parses cleanly with the imports present (e.g., run the project's typecheck/build or a syntax check). Do not report Stage 3 complete if the verification fails.
 
 **Frontend-only setups:** `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` in `.env.example` are for the MCP server only — they must never be exposed in client-side code or frontend bundles. Only `CLOUDINARY_CLOUD_NAME` (and its `VITE_*` equivalent when applicable) is safe to use client-side.
 
@@ -579,7 +585,7 @@ curl -s -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload
 
 Record `"preset_source": "admin_api_script"` in `docs/cloudinary-environment.json`.
 
-**Cloud name:** `CLOUDINARY_CLOUD_NAME` is already in `.env`. Load it with the shell-wrap and use it to construct the preview URLs. Do not ask the user.
+**Cloud name:** `CLOUDINARY_CLOUD_NAME` is already in `.env`. The cloud name is not a secret — it appears in every public delivery URL. To get the literal value for constructing URLs and writing artifacts, run `set -a && . .env && set +a && echo "$CLOUDINARY_CLOUD_NAME"` (echo that variable only; never echo the API key or secret). Use the literal cloud name — never a placeholder — in every URL written to chat, `docs/cloudinary-environment.json`, and the preview HTML. Do not ask the user.
 
 Measurements and artifact creation never require MCP and must always run regardless of IDE or agent state. For preset creation (the Admin API call), use the provided curl script that loads credentials from `.env` via shell-wrap.
 
@@ -614,7 +620,8 @@ Do not skip the `samples/coffee` fetch and go straight to MCP search. This is a 
 - Keep the original URL, transformed URL, and transformation text identical in chat, `docs/cloudinary-environment.json`, and preview HTML.
 - Always create or update `docs/cloudinary-environment.json` when Stage 5 runs. Include `schema_version: 1`, non-secret `cloud_name`, upload preset name (`getting_started`), `preview` values, and real `measurements`. Never write secrets.
 - Measure both preview URLs with a local script in a suitable project language. Use this Chrome-like `Accept` header: `image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8`. Record real bytes, content type, and dimensions when available. Never fabricate measurements. **Important:** The original image format (e.g., JPEG) will differ from the transformed format (e.g., WebP) because the transformation chain includes `f_auto`, which automatically selects the optimal format. Record both formats separately in measurements.
-- For front-end and full-stack lanes, create or update `docs/cloudinary-getting-started-preview.html`. It must use the same two URL literals, fetch both URLs with the same `Accept` header, use `createImageBitmap` for browser stats when possible, show savings, and include a `#stage-5-integration-snippet` section. Back-end API-only lanes skip this file.
+- For front-end and full-stack lanes, create or update `docs/cloudinary-getting-started-preview.html`. It must contain the same two URL literals as chat and `docs/cloudinary-environment.json` — the exact original and transformed URLs with the real cloud name, never a placeholder such as `<cloud>`, `your_cloud_name`, or `YOUR_CLOUD_NAME` — fetch both URLs with the same `Accept` header, use `createImageBitmap` for browser stats when possible, show savings, and include a `#stage-5-integration-snippet` section. Back-end API-only lanes skip this file.
+- **Mandatory preview verification:** after writing the preview HTML, extract both URLs exactly as they appear in the file (e.g., grep them out) and fetch each one, confirming a 200 response. If either fetch fails or a placeholder is found in the file, fix the file and re-verify before declaring Stage 5 complete. Never report Stage 5 complete with unverified or placeholder URLs in the preview HTML.
 - Never add the standalone preview to framework route code. It belongs only in `docs/`.
 - **Comments in generated files:** Every file created or significantly changed in Stage 5 must include short, useful inline comments explaining what each section does and why. Apply this to `docs/cloudinary-getting-started-preview.html` (explain each section: image display, measurement fetch, SDK snippet, stats), `docs/cloudinary-environment.json` (top-level comment block describing what the file contains and where to find docs), and any validation scripts. Focus on the non-obvious — why a particular URL pattern is used, what the Accept header achieves. Do not comment every line.
 - For server lanes, the chat snippet and `#stage-5-integration-snippet` must generate the delivery URL through the detected stack's Cloudinary SDK when available. Do not use a pasted static URL as the only server integration.

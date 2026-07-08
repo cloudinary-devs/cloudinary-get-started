@@ -5,14 +5,14 @@
 Cloudinary setup must follow the detected project stack:
 - Use the official Cloudinary SDK or Cloudinary documentation appropriate to the repo’s language/framework.
 - Treat Python and React as conditional cases, not defaults.
-- Install `cloudinary-react`, `@cloudinary/react`, or React scaffolding only when React is detected in the repo or the user explicitly chooses React.
+- Install React packages or scaffolding only when React is detected in the repo or the user explicitly chooses React. For React, install `@cloudinary/react` and `@cloudinary/url-gen` — never the deprecated legacy `cloudinary-react` npm package. (Note: elsewhere in these instructions, `cloudinary-react` refers only to the skill from the skills pack, never to an npm package.)
 - For other front-end stacks, use the framework-appropriate Cloudinary docs or SDK. Do not add React packages.
 - For server lanes, Stage 5 snippets must be SDK-first for the detected server SDK whenever that SDK supports URL generation. Use an equivalent signed request only for Admin API validation when the SDK path is unavailable.
 
 ### Non-negotiable global rules
 
 - Never ask for, print, echo, log, quote, or display secrets.
-- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check ONLY that the workspace-root `.env` file exists (using `ls -f .env` or equivalent one-liner to verify existence only). Never read the file, never view its contents, never display any output from reading it. Rely entirely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading, echoing, or displaying their values.
+- **ABSOLUTE PROHIBITION:** Never open, read, parse, grep, cat, or access `.env` contents in any way — not with the Read tool, not with Bash/shell commands, not with any file-reading mechanism. This rule has no exceptions. From Stage 4 onward, check ONLY that the workspace-root `.env` file exists (using `ls -f .env` or equivalent one-liner to verify existence only). Never read the file, never view its contents, never display any output from reading it. Rely entirely on user confirmation and successful MCP/API behavior. If credentials are needed for a script, load them via shell-wrap (`set -a && . .env && set +a`) without reading, echoing, or displaying their values. **Single exception — cloud name only:** `CLOUDINARY_CLOUD_NAME` is not a secret; it appears in every public delivery URL. After shell-wrap loading, you may run `echo "$CLOUDINARY_CLOUD_NAME"` (that variable only — never the API key or secret) to obtain the literal cloud name needed for delivery URLs and validation artifacts.
 - Stage 3 may write placeholder `CLOUDINARY_*` values to `.env.example`. Client-side placeholders are allowed only when required by the detected framework, such as `VITE_*` for React/Vite.
 - Never place API secrets in source files, generated docs, MCP JSON, chat replies, scripts that echo output, logs, or validation artifacts.
 - If secrets are pasted into chat or committed, tell the user to rotate API credentials in the Cloudinary Console immediately without reproducing the secret values.

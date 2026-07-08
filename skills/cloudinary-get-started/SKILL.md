@@ -47,7 +47,7 @@ Follow this hard order whenever work remains:
 6. Stage 5: preset + validation artifacts + **Done gate** (REQUIRED — do not skip)
 7. After the user replies `Done`: What's next (includes MCP activation)
 
-**CRITICAL:** Stage 5 MUST end with the Done gate before showing What's next. The Done gate appears in `references/stage-5-validation.md` (lines 113-116). Do not show What's next until the user explicitly replies "Done".
+**CRITICAL:** Stage 5 MUST end with the Done gate before showing What's next. The Done gate appears in `references/stage-5-validation.md` (the closing block of the "Verification response format" section). Do not show What's next until the user explicitly replies "Done".
 
 At the end of every stage, use the stage completion format defined below.
 

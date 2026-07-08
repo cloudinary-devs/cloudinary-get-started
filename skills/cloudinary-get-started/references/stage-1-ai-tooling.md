@@ -50,7 +50,7 @@ You're missing <missing MCP servers/skills> that make the coding assistant bette
 
 Placeholder rules:
 - Name the actual missing items, for example `Cloudinary MCP servers` or `cloudinary-docs and cloudinary-transformations via npx skills add`.
-- Include `cloudinary-react` only when React-classified.
+- Include the `cloudinary-react` skill only when React-classified. (This is the skill from the skills pack — not the deprecated `cloudinary-react` npm package, which must never be installed.)
 - After approval, complete the full setup needed for the current IDE or agent environment, including required MCP config, skills installation, skill relocation from `.agents/skills/`, cleanup, `.gitignore` updates, and verification.
 
 After approval only:

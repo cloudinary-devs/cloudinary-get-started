@@ -26,6 +26,12 @@ Use the detected stack as the source of truth:
 - Do not request real credentials in Stage 3.
 - Use the official Cloudinary SDK/docs and the repo's existing package manager/build conventions.
 
+**Source of correct install and import instructions — do not work from memory:**
+- Before installing packages or writing any SDK code, read the installed Cloudinary skill that matches the detected stack (for Claude Code: `.claude/skills/cloudinary-react/SKILL.md` for React-classified projects) and follow its install and import instructions exactly, including package names and versions.
+- For stacks without a matching installed skill, fetch the official Cloudinary documentation page for the detected framework/SDK (quickstart or SDK reference) and follow its install and import instructions. Never guess package names, versions, or import paths.
+- Include an import for every Cloudinary feature the generated code uses. With `@cloudinary/url-gen`, each action/qualifier is a separate tree-shakable import (e.g., `@cloudinary/url-gen/actions/resize`) — a missing import is a broken build, not a style issue.
+- After writing Stage 3 code, verify it builds or parses cleanly with the imports present (e.g., run the project's typecheck/build or a syntax check). Do not report Stage 3 complete if the verification fails.
+
 **Frontend-only setups:** `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` in `.env.example` are for the MCP server only — they must never be exposed in client-side code or frontend bundles. Only `CLOUDINARY_CLOUD_NAME` (and its `VITE_*` equivalent when applicable) is safe to use client-side.
 
 When Stage 3 completes for a frontend-only setup, include this note in the user-facing response:
