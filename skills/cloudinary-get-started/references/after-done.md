@@ -63,6 +63,8 @@ go run .
 
 If the detected framework is not listed above, determine and show the equivalent install-then-start sequence for that stack, but always include all prerequisite setup steps (venv, package manager install, etc.) before the server start command.
 
+**Full-stack apps with separate client and server processes** (e.g., a Vite/React front end plus an Express API): show the start commands for BOTH processes, each clearly labeled with what it starts and its port. Showing only the server command leaves the user unable to open the app.
+
 ### Activate the MCP servers
 
 Restart your IDE so the MCP servers load your credentials. You may see permission prompts—confirm them. If you need help, ask the AI assistant.
@@ -104,6 +106,7 @@ Restart your IDE so the MCP servers load your credentials. You may see permissio
 ### Rules for next steps
 
 * **Output the startup commands exactly as written in the framework sections above.** Do not abbreviate, paraphrase, improvise, or substitute alternative commands. If Python/Flask is detected, output the full `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt` followed by `python3 app.py` — never skip steps or show `pip install` alone.
+* **The "Build your app/API with Cloudinary" items are copy/paste prompts, not code.** Output each prompt string exactly as written above — verbatim (apart from the `[framework]` substitution), shown as copyable text. Never replace or augment them with code snippets, component examples, tutorials, or a feature list of your own, and never add extra sections (e.g., "Resources") to What's Next. No SDK or app code appears anywhere in What's Next — code is written only after the user runs one of the prompts, and then only per the matching installed `cloudinary-*` skill.
 * **What to include in What's Next:** Show sections in this order: (1) Install Cloudinary VS Code extension, (2) Run your app, (3) Activate the MCP servers, (4) Build your app/API with Cloudinary (pick relevant prompts). Then finish with the "What's safe to keep or delete" section at the end.
 * Always show the VS Code extension section — users in other editors will simply skip it.
 * Use the detected delivery lane to choose which prompts to show. Show the "Build your app with Cloudinary" section for front-end/full-stack, or "Build your API with Cloudinary" for back-end API-only.
