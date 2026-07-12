@@ -49,6 +49,8 @@ Follow this hard order whenever work remains:
 
 **CRITICAL:** Stage 5 MUST end with the Done gate before showing What's next. The Done gate appears in `references/stage-5-validation.md` (the closing block of the "Verification response format" section). Do not show What's next until the user explicitly replies "Done".
 
+**CRITICAL:** Immediately before writing the What's next reply, READ `references/after-done.md` in full — even if you read it earlier in the session — and copy each section you show verbatim from that file, word-for-word. Never write next-step content from memory. In particular, "Customize your cloud name" means renaming the cloud name on the product environments settings page — it is NOT the custom domain/CNAME feature; never mention CNAME, custom domains, subdomains, or Console paths like "Settings → Account".
+
 At the end of every stage, use the stage completion format defined below.
 
 Skip redundant work when silent explore, files, MCP behavior, or the user proves a stage is already satisfied. Do not replay or pseudo-validate work that was never missing. Even when skipping, still end with the Done gate, and always provide What's next after `Done`.
