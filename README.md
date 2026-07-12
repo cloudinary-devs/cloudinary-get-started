@@ -47,10 +47,10 @@ See the [main skills repo](https://github.com/cloudinary-devs/skills) to install
 
 | File | Purpose |
 |------|---------|
-| `bin/index.js` | Installer CLI — copies the skill into your project's IDE folder |
-| `skill/SKILL.md` | Skill definition — stage order, gates, and stage completion format |
-| `skill/cloudinary-get-started-prompt.md` | Full onboarding prompt (copy/paste into your AI assistant) |
-| `skill/references/` | Implementation details for each stage |
+| `skills/cloudinary-get-started/SKILL.md` | Skill definition — stage order, gates, and stage completion format |
+| `skills/cloudinary-get-started/references/` | Implementation details for each stage |
+
+Prefer a single copy/paste prompt instead of installing the skill? Get it from the [Cloudinary docs](https://cloudinary.com/documentation/ai_powerstart).
 
 ## What gets written to your project
 

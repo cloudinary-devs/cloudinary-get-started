@@ -2,11 +2,12 @@
 
 **CRITICAL:** This reference contains the authoritative content for the final step. Show this section ONLY AFTER the user explicitly replies "Done" to the Stage 5 Done gate (the closing block of the "Verification response format" section in `stage-5-validation.md`).
 
-After the user says `Done`, give them up to four specific next steps in this order:
+After the user says `Done`, give them up to five specific next steps in this order:
 1. **Install the Cloudinary VS Code extension** (if using VS Code or a VS Code-based IDE)
-2. **Run your app** — see the integration end-to-end from your browser
-3. **Activate the MCP servers** — enable AI assistance in your IDE
-4. **Choose a next step** — pick from the relevant use-case prompts
+2. **Customize your cloud name** — brand your delivery URLs for better SEO/AEO
+3. **Run your app** — see the integration end-to-end from your browser
+4. **Activate the MCP servers** — enable AI assistance in your IDE
+5. **Choose a next step** — pick from the relevant use-case prompts
 
 Use the delivery lane tracked during setup to choose which prompts to show. Replace `[framework]` in copy/paste prompts with the detected framework name, such as Flask, Django, Rails, or Next.js.
 
@@ -18,6 +19,16 @@ If you're using VS Code or a VS Code-based IDE (like Cursor), the [Cloudinary VS
 
 1. Open VS Code extensions (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows/Linux)
 2. Search for "Cloudinary" and click Install
+
+### Customize your cloud name
+
+Your cloud name appears in every delivery URL, so a short, brand-related name is better for SEO/AEO than the auto-generated one your account starts with.
+
+1. Open your [product environment settings](https://console.cloudinary.com/settings/product-environments).
+2. Click the **More** (⋮) kebab button for your product environment and select **Edit**.
+3. Enter your new cloud name and save.
+
+**If you change it:** update `CLOUDINARY_CLOUD_NAME` in `.env` (and any client-side equivalent such as `VITE_CLOUDINARY_CLOUD_NAME`) — the delivery URLs verified during setup used the old cloud name.
 
 ### Run your app
 
@@ -107,7 +118,7 @@ Restart your IDE so the MCP servers load your credentials. You may see permissio
 
 * **Output the startup commands exactly as written in the framework sections above.** Do not abbreviate, paraphrase, improvise, or substitute alternative commands. If Python/Flask is detected, output the full `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt` followed by `python3 app.py` — never skip steps or show `pip install` alone.
 * **The "Build your app/API with Cloudinary" items are copy/paste prompts, not code.** Output each prompt string exactly as written above — verbatim (apart from the `[framework]` substitution), shown as copyable text. Never replace or augment them with code snippets, component examples, tutorials, or a feature list of your own, and never add extra sections (e.g., "Resources") to What's Next. No SDK or app code appears anywhere in What's Next — code is written only after the user runs one of the prompts, and then only per the matching installed `cloudinary-*` skill.
-* **What to include in What's Next:** Show sections in this order: (1) Install Cloudinary VS Code extension, (2) Run your app, (3) Activate the MCP servers, (4) Build your app/API with Cloudinary (pick relevant prompts). Then finish with the "What's safe to keep or delete" section at the end.
+* **What to include in What's Next:** Show sections in this order: (1) Install Cloudinary VS Code extension, (2) Customize your cloud name, (3) Run your app, (4) Activate the MCP servers, (5) Build your app/API with Cloudinary (pick relevant prompts). Then finish with the "What's safe to keep or delete" section at the end.
 * Always show the VS Code extension section — users in other editors will simply skip it.
 * Use the detected delivery lane to choose which prompts to show. Show the "Build your app with Cloudinary" section for front-end/full-stack, or "Build your API with Cloudinary" for back-end API-only.
 * For front-end/full-stack apps, show the "Optimize and deliver", "Transform and deliver video", and "Upload photos" prompts.

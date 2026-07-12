@@ -175,4 +175,4 @@ Read the appropriate reference file when entering each stage or when detailed ru
 | `references/stage-3-sdk-setup.md` | When entering Stage 3 — covers SDK install, env file setup, and Stage 4 gate enforcement |
 | `references/stage-4-credentials.md` | When entering Stage 4 — covers D1/D2 credential retrieval and `.env` setup |
 | `references/stage-5-validation.md` | When entering Stage 5 — covers preset creation, artifact requirements, and validation response format |
-| `references/after-done.md` | After the user replies `Done` — covers next-step bullets (VS Code ext, run app, activate MCP, build with Cloudinary) and cleanup guidance |
+| `references/after-done.md` | After the user replies `Done` — covers next-step bullets (VS Code ext, customize cloud name, run app, activate MCP, build with Cloudinary) and cleanup guidance |
