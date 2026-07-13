@@ -1,4 +1,4 @@
-# Cloudinary Getting Started
+# Cloudinary Get Started
 
 An installer CLI for an AI-assisted onboarding skill that guides you through integrating Cloudinary into a new or existing project.
 
