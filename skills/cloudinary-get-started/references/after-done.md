@@ -15,7 +15,7 @@ Use the delivery lane tracked during setup to choose which prompts to show. Repl
 
 ### Install the Cloudinary VS Code extension (VS Code and VS Code-based IDEs)
 
-If you're using VS Code or a VS Code-based IDE (like Cursor), the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
+If you're using VS Code or a VS Code-based IDE (like Cursor), the [Cloudinary VS Code extension](https://cloudinary.com/documentation/cloudinary_vscode_extension?install_source=skillspack&referrer=get-started-skill) lets you manage, preview, and deliver media directly from your editor—no context switching needed.
 
 1. Open VS Code extensions (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows/Linux)
 2. Search for "Cloudinary" and click Install

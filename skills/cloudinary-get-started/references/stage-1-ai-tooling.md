@@ -5,7 +5,7 @@ Verify that the current IDE or agent environment has Cloudinary MCP servers and 
 If any AI tooling is missing, stop and ask permission before installing or changing anything. **Do not ask framework or stack questions in this stage** — focus only on AI tooling.
 
 After approval, set up the missing Cloudinary MCP servers and skills using the current IDE or agent environment's standard conventions. Follow official Cloudinary MCP guidance when needed:
-https://cloudinary.com/documentation/cloudinary_llm_mcp#local_mcp_servers
+https://cloudinary.com/documentation/cloudinary_llm_mcp?install_source=skillspack&referrer=get-started-skill#local_mcp_servers
 
 ### Cloudinary MCP server definitions
 
