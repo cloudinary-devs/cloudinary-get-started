@@ -31,7 +31,9 @@ Decide first, before writing anything for this step:
 
 When shown, reply with the exact text between the BEGIN and END marker lines — character-for-character, rendered as normal markdown. Do not include the marker lines themselves, do not wrap the text in a code fence, and do not shorten, reformat, merge, or reword any line:
 
-<!-- BEGIN VERBATIM: Customize your cloud name -->
+<!-- BEGIN VERBATIM -->
+### Customize your cloud name
+
 Your cloud name appears in every delivery URL. A short, brand-related cloud name is better for SEO/AEO than the auto-generated default:
 
 1. Go to: `https://console.cloudinary.com/app/settings/product-environments`
@@ -45,7 +47,7 @@ Your cloud name appears in every delivery URL. A short, brand-related cloud name
 - Change `CLOUDINARY_CLOUD_NAME=<old_name>` to `CLOUDINARY_CLOUD_NAME=<new_name>`
 - If using React/Vite, also update `VITE_CLOUDINARY_CLOUD_NAME=<new_name>`
 - Restart your app so the new cloud name takes effect. The delivery URLs verified during setup used the old cloud name, so they'll change.
-<!-- END VERBATIM: Customize your cloud name -->
+<!-- END VERBATIM -->
 
 ### Run your app
 
@@ -99,7 +101,7 @@ Restart your IDE so the MCP servers load your credentials. You may see permissio
 
 ---
 
-### Build your app with Cloudinary
+### Build your app with Cloudinary using prompts
 
 **Optimize and deliver your product or marketing assets**
 
@@ -113,7 +115,7 @@ Restart your IDE so the MCP servers load your credentials. You may see permissio
 
 `Set up users to upload images in my [framework] app using the getting_started upload preset and the Cloudinary Upload widget`
 
-### Build your API with Cloudinary (back-end only)
+### Build your API with Cloudinary using prompts (back-end only)
 
 **Generate transformed and optimized delivery URLs**
 

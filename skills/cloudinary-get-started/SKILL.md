@@ -15,21 +15,7 @@ description: >-
 
 ## When to use this skill
 
-Use this skill when helping a user set up Cloudinary in a new or existing project, or when validating an existing Cloudinary integration.
-
-This skill is especially useful when the user asks to:
-
-- Get started with Cloudinary or CLD
-- Configure Cloudinary in a codebase
-- Set up Cloudinary in an IDE or agent environment
-- Install or configure the right Cloudinary SDK for the detected stack
-- Set up Cloudinary MCP servers or related AI tooling
-- Handle credentials, environment variables, or .env files safely
-- Validate upload presets or upload behavior
-- Test generated delivery URLs
-- Measure, inspect, or compare delivered assets
-- Document the Cloudinary setup for the project
-- Decide what to do next after the initial integration
+Use this skill to set up or validate Cloudinary in a new or existing project, including the detected-stack SDK, credentials, AI tooling, delivery validation, and next steps.
 
 ## Operating principle
 
@@ -87,12 +73,11 @@ Use this exact format at the end of every stage. No exceptions.
 **CRITICAL:** After the blocking prompt footer, you MUST STOP and wait for the user's response before proceeding to the next stage. Do not continue, do not start Stage X+1, do not run Stage X+1 setup code until the user answers.
 
 Rules:
-- Mark every completed stage with `[x]` in the checklist; leave upcoming stages as `[ ]`.
-- The "Stage X complete" bullets are concrete and specific — name actual files, packages, and actions, not categories.
-- The "Stage X+1" intro previews the next stage scope before the blocking prompt footer.
-- **Exception for the Stage 4 → Stage 5 transition:** replace the one or two sentence preview with the full validation plan as a bulleted list, drawn from the "What this stage does" section of `references/stage-5-validation.md`. This gives the user a clear picture of everything validation covers before they confirm.
-- The blocking prompt footer is always last (per `references/global-rules.md`).
-- **DO NOT execute the next stage until the user confirms.** Wait for their explicit answer to the gate question.
+- Mark completed stages `[x]` and upcoming stages `[ ]`.
+- Completion bullets name concrete files, packages, and actions.
+- The next-stage intro previews *what* happens; only the blocking prompt footer asks whether to proceed.
+- For Stage 4 → 5, replace the intro with the complete "What this stage does" bullets from `references/stage-5-validation.md`.
+- The blocking prompt footer is last (per `references/global-rules.md`). Do not start the next stage before confirmation.
 
 **Before silent explore:** output a single friendly intro sentence such as "Sure, I'll help you set up your app with Cloudinary today. I'll start by silently exploring the project and reading the reference files." before doing any file inspection. Do not narrate the exploration itself.
 
@@ -110,25 +95,15 @@ Use these gates as the single source of truth for stage progression.
 
 ### After Stage 1 — proceed to Stage 2
 
-Both are true:
-
-- Required Cloudinary skills are installed in the current IDE or agent environment's canonical skills location.
-- Both Cloudinary MCP server configurations are present for `cloudinary-asset-mgmt` and `cloudinary-env-config`.
+Proceed only when the required Cloudinary skills are in the environment's canonical skills location and both `cloudinary-asset-mgmt` and `cloudinary-env-config` are configured.
 
 ### After Stage 2 — proceed to Stage 3
 
-Both are true:
-
-- Stack and delivery lane are confirmed with the user.
-- User explicitly confirms readiness to proceed to Stage 3 (blocking prompt footer required at end of Stage 2).
+Proceed only after confirming the stack and delivery lane and receiving explicit approval through Stage 2's blocking prompt footer.
 
 ### After Stage 3 — proceed to Stage 4
 
-Stage 3 complete:
-
-- SDK installed and configured.
-- `.env.example` created with placeholder credentials.
-- `.gitignore` updated to exclude `.env`.
+Proceed only after the SDK is installed and configured, `.env.example` contains placeholders, and `.gitignore` excludes `.env`.
 
 ### Before Stage 4 — D1 account check is mandatory
 
@@ -149,20 +124,11 @@ Ready to fill in your Cloudinary credentials?
 
 ### After Stage 4 D1+D2 — proceed to Stage 5
 
-All are true:
-
-- D1 complete: user has confirmed they have a Cloudinary account.
-- D2 complete: user has retrieved cloud name, API key, and API secret from Cloudinary Console and filled `.env` with real credentials.
+Proceed only after the user confirms an account (D1) and confirms retrieving all three credentials and saving real values in `.env` (D2).
 
 ### Before Stage 5 — SDK and credentials fully ready
 
-All are true:
-
-- The workspace-root `.env` file exists with real credentials filled in.
-- The user confirms `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` are saved.
-- Any required client-side env placeholders are handled for the detected framework.
-
-Never read `.env` contents to verify this gate.
+Proceed only when the workspace-root `.env` exists, the user confirms all three `CLOUDINARY_*` values are real, and required client-side variables are handled. Never read `.env` to verify this.
 
 ## Reference files
 
