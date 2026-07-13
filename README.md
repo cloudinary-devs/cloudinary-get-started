@@ -7,10 +7,8 @@ An installer CLI for an AI-assisted onboarding skill that guides you through int
 Install the skill globally or in your project:
 
 ```
-npx skills add cloudinary-devs/cloudinary-get-started --copy
+npx skills add https://github.com/cloudinary-devs/cloudinary-get-started --skill cloudinary-get-started
 ```
-
-This installs the skill to `.agents/skills/cloudinary-get-started` by default, as well as any other agent or IDE-specific skill folder, such as `.claude`.
 
 ## Use
 
