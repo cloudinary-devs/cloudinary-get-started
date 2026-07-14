@@ -31,9 +31,9 @@ Go to D2 only after the user confirms they have an account.
 
 ### D2 — Get credentials and fill `.env`
 
-Grab your **cloud name**, **API key**, and **API secret** from the Cloudinary Console: [Cloudinary Console — API Keys](https://console.cloudinary.com/settings/api-keys)
+Grab your **cloud name**, **API key**, and **API secret** from the Cloudinary Console: [Cloudinary Console — API Keys](https://console.cloudinary.com/settings/api-keys?install_source=skillspack&referrer=get-started-skill)
 
-**IMPORTANT:** Use the exact link above — `https://console.cloudinary.com/settings/api-keys`. Do not tell the user to go to the "Dashboard tab" or any other location.
+**IMPORTANT:** Use the exact link above — `https://console.cloudinary.com/settings/api-keys?install_source=skillspack&referrer=get-started-skill`. Do not tell the user to go to the "Dashboard tab" or any other location.
 
 Once they have their credentials, give instructions based on the Stage 3 `.env` setup choice:
 

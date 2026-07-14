@@ -27,7 +27,7 @@ Decide first, before writing anything for this step:
 - **Machine-generated cloud name** (an unpronounceable consonant/digit jumble such as `dqj4x8f3k` or `hb2q1r5xj`): show this step by copying the marker block below exactly.
 - **Anything else** — any cloud name containing a recognizable word, personal name, or brand-like string, including hyphenated or multi-word names (e.g., `yelenik`, `new-shop`, `mycompany`, `acme`): SKIP this step. Skipping means output NOTHING for it: no "Customize your cloud name" heading, no one-line summary, no improvised alternative, and no line for it in the numbered overview — continue directly to the next section. Writing ANY cloud-name content for a non-machine-generated cloud name is an error. All-lowercase alone does not mean random. **When in doubt, skip.**
 
-**Scope guard:** this step renames the cloud name inside the delivery URL path (`res.cloudinary.com/<cloud_name>/...`). It is NOT the custom domain / CNAME feature (`media.yourcompany.com`) — never mention custom domains or subdomains here, and never invent Console paths such as "Account → Custom Domain". Do not write cloud-name steps from your own knowledge: the cloud name is NOT edited under "Settings → Account", there is no pencil/edit icon flow, and any navigation other than the marker block's steps is wrong. The only correct location is **Settings → Product Environments** (`https://console.cloudinary.com/app/settings/product-environments`), exactly as written in the marker block below.
+**Scope guard:** this step renames the cloud name inside the delivery URL path (`res.cloudinary.com/<cloud_name>/...`). It is NOT the custom domain / CNAME feature (`media.yourcompany.com`) — never mention custom domains or subdomains here, and never invent Console paths such as "Account → Custom Domain". Do not write cloud-name steps from your own knowledge: the cloud name is NOT edited under "Settings → Account", there is no pencil/edit icon flow, and any navigation other than the marker block's steps is wrong. The only correct location is **Settings → Product Environments** (`https://console.cloudinary.com/app/settings/product-environments?install_source=skillspack&referrer=get-started-skill`), exactly as written in the marker block below.
 
 When shown, reply with the exact text between the BEGIN and END marker lines — character-for-character, rendered as normal markdown. Do not include the marker lines themselves, do not wrap the text in a code fence, and do not shorten, reformat, merge, or reword any line:
 
@@ -36,7 +36,7 @@ When shown, reply with the exact text between the BEGIN and END marker lines —
 
 Your cloud name appears in every delivery URL. A short, brand-related cloud name is better for SEO/AEO than the auto-generated default:
 
-1. Go to: `https://console.cloudinary.com/app/settings/product-environments`
+1. Go to: `https://console.cloudinary.com/app/settings/product-environments?install_source=skillspack&referrer=get-started-skill`
 2. Find your product environment in the list.
 3. Click the **More** button (three dots ⋮) on the right side of your product environment row.
 4. Select **Edit** from the menu.

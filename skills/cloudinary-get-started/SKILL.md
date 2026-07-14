@@ -11,7 +11,7 @@ description: >-
   other SDK unless detected or explicitly chosen.
 metadata:
   author: Cloudinary
-  version: 1.0.2
+  version: 1.0.3
 ---
 
 # Cloudinary Getting Started
