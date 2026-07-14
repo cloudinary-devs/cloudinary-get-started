@@ -1,4 +1,4 @@
-# Cloudinary Getting Started
+# Cloudinary Get Started
 
 An installer CLI for an AI-assisted onboarding skill that guides you through integrating Cloudinary into a new or existing project.
 
@@ -7,10 +7,8 @@ An installer CLI for an AI-assisted onboarding skill that guides you through int
 Install the skill globally or in your project:
 
 ```
-npx skills add cloudinary-devs/cloudinary-get-started --copy
+npx skills add https://github.com/cloudinary-devs/cloudinary-get-started --skill cloudinary-get-started
 ```
-
-This installs the skill to `.agents/skills/cloudinary-get-started` by default, as well as any other agent or IDE-specific skill folder, such as `.claude`.
 
 ## Use
 
@@ -20,10 +18,10 @@ Once installed, run the onboarding guide in any project:
 /cloudinary-get-started
 ```
 
-The skill walks through seven steps:
+The skill walks through seven steps, asking for your approval before installing or changing anything — you can decline any part along the way:
 
 1. **Silent explore** — Detect your project structure, framework, and stack (automatically)
-2. **Stage 1: AI tooling** — Install Cloudinary MCP servers (required) and optionally the related skills
+2. **Stage 1: AI tooling** — Install Cloudinary MCP servers and the related skills
 3. **Stage 2: Framework detection** — Identify your stack (Django, Rails, Next.js, etc.) and deployment model (front-end, back-end, or full-stack)
 4. **Stage 3: SDK setup** — Install the official Cloudinary SDK for your framework and create `.env.example`
 5. **Stage 4: Credentials** — Retrieve your Cloudinary account credentials and save them to `.env`
@@ -36,12 +34,12 @@ The skill walks through seven steps:
 - `cloudinary-asset-mgmt` — Query and manage assets in your Cloudinary account
 - `cloudinary-env-config` — Read and manage environment variables
 
-**Related skills** (optional, install separately):
+**Related skills**:
 - **`cloudinary-docs`** — Answers Cloudinary questions using real, up-to-date documentation
 - **`cloudinary-transformations`** — Generates valid image and video transformation URLs that follow best practices
 - **`cloudinary-react`** — Provides React SDK patterns, configuration, and troubleshooting (used only if you choose React)
 
-See the [main skills repo](https://github.com/cloudinary-devs/skills) to install the related skills.
+These are pulled from the [main skills repo](https://github.com/cloudinary-devs/skills) via `npx skills add` — no separate install step needed.
 
 ## Files in this repo
 
@@ -60,6 +58,7 @@ When the skill runs, it creates or updates these files in your **project root**:
   - Claude Code: `.mcp.json`
   - Cursor: `.cursor/mcp.json`
   - VS Code: `.vscode/mcp.json`
+- **Related skills** — installed to your IDE/agent's canonical skills location (e.g. Claude Code: `.claude/skills/`); `.gitignore` updated to exclude the staging folder they're synced from
 - **SDK configuration** — updated in your app's entry point (e.g., `app.py`, `server.js`, `app/config.rb`) with Cloudinary imports and config
 - **Dependency manifest** — `requirements.txt` / `package.json` / `Gemfile` / `go.mod` / etc. — updated with Cloudinary SDK
 - `.env.example` — placeholder credentials (safe to commit)

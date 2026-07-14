@@ -9,6 +9,9 @@ description: >-
   test delivery URLs, document environment setup, or identify next steps.
   Detect the project stack first; never assume React, Python, Node.js, or any
   other SDK unless detected or explicitly chosen.
+metadata:
+  author: Cloudinary
+  version: 1.0.3
 ---
 
 # Cloudinary Getting Started
